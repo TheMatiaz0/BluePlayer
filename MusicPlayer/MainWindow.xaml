@@ -9,20 +9,31 @@
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Left" Background="LightGray" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="167" Margin="0">
-                <Button x:Name="Playlist" Content="Playlist" Background="{x:Null}" BorderBrush="Black"/>
+                <Button x:Name="Playlist" Content="Playlist" Background="{x:Null}" BorderBrush="Black" Click="Playlist_Click"/>
                 <Separator Opacity="0" Height="5"/>
-                <Button x:Name="Files" Content="Files" Background="{x:Null}" BorderBrush="Black"/>
+                <Button x:Name="Files" Content="Files" Background="{x:Null}" BorderBrush="Black" Click="Files_Click"/>
+                <Separator Opacity="0" Height="60" />
+                <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" Text="Path " HorizontalAlignment="Center" Width="167"/>
+                <Button x:Name="OkBtn" Content="OK" Click="OkBtn_Click"/>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Bottom" Width="Auto" MinWidth="620" HorizontalAlignment="Center" Orientation="Horizontal" Background="#FF514C4C" Margin="0">
-                <Button Content="Play" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Margin="175,0,0,0" Click="Button_Click"/>
-                <Button Content="Stop" HorizontalAlignment="Center" VerticalAlignment="Center" Width="76"/>
-                <Button Content="Pause" HorizontalAlignment="Center" VerticalAlignment="Center" Width="76"/>
+            <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
+                <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White" />
+                <WrapPanel HorizontalAlignment="Center">
+                    <Button Content="Back" Name="BtnBack" Click="BtnBack_Click" />
+                    <Button Content="Play" Name="BtnPlay" Click="BtnPlay_Click"/>
+                    <Button Content="Pause" Name="BtnPause" Click="BtnPause_Click"/>
+                    <Button Content="Stop" Name="BtnStop" Click="BtnStop_Click" />
+                    <Button Content="Skip" Name="BtnSkip" Click="BtnSkip_Click" />
+                </WrapPanel>
             </StackPanel>
-            <ListView x:Name="AllMusicTracks" DockPanel.Dock="Top" Width="Auto" Height="Auto" MinWidth="622" MinHeight="380">
+
+            <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" Height="Auto" MinWidth="622" MinHeight="380" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Artist}" Header="Artists" Width="200"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding SongName}" Header="Songs" Width="450"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="25"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding SongName}" Header="Song" Width="385"/>
+                        <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Header="Artist" Width="155"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Extension}" Header="Extension" Width="55"/>
                     </GridView>
                 </ListView.View>
             </ListView>
