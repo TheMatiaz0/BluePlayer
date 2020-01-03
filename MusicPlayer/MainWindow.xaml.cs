@@ -28,7 +28,7 @@ namespace MusicPlayer
 	public partial class MainWindow : Window
 	{
 		public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
-		private MediaPlayer mediaPlayer = new MediaPlayer();
+		private readonly MediaPlayer mediaPlayer = new MediaPlayer();
 		private int maxSongs = 0;
 
 		private int currentSongNumber = 0;
@@ -52,7 +52,7 @@ namespace MusicPlayer
 
 		private void Timer_Tick(object sender, EventArgs e)
 		{
-			if (mediaPlayer.Source != null && mediaPlayer.HasAudio)
+			if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
 				lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
 			else
 				lblStatus.Content = "No file selected...";
@@ -99,8 +99,10 @@ namespace MusicPlayer
 
 		private void OkBtn_Click(object sender, RoutedEventArgs e)
 		{
-			CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-			dialog.IsFolderPicker = true;
+			CommonOpenFileDialog dialog = new CommonOpenFileDialog
+			{
+				IsFolderPicker = true
+			};
 			CommonFileDialogResult result = dialog.ShowDialog();
 
 			if (result == CommonFileDialogResult.Ok)
@@ -211,6 +213,7 @@ namespace MusicPlayer
 		private void BtnSkip_Click(object sender, RoutedEventArgs e)
 		{
 			currentSongNumber += 1;
+
 			if (currentSongNumber > musicTracks.Count - 1)
 			{
 				currentSongNumber = 0;
@@ -234,8 +237,11 @@ namespace MusicPlayer
 
 		private void AllMusicTracks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			MusicTrack item = ((FrameworkElement)e.OriginalSource).DataContext as MusicTrack;
-			UpdateMusic(item, true);
+			if (((FrameworkElement)e.OriginalSource).DataContext is MusicTrack item)
+			{
+				currentSongNumber = item.ID;
+				UpdateMusic(item, true);
+			}
 		}
 
 		private void AllMusicTracks_Drop(object sender, DragEventArgs e)
@@ -245,10 +251,23 @@ namespace MusicPlayer
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
 				AddFiles(files);
-				AllMusicTracks.ItemsSource = musicTracks;
-
-				DataContext = this;
 			}
 		}
+
+		/*
+		private void AllMusicTracks_SelectedItem(object sender, RoutedEventArgs e)
+		{
+			if (Keyboard.IsKeyDown(Key.Enter))
+			{
+				if (((FrameworkElement)e.OriginalSource).DataContext is MusicTrack item)
+				{
+					currentSongNumber = item.ID;
+					UpdateMusic(item, true);
+				}
+			}
+		}
+		*/
+
+		
 	}
 }

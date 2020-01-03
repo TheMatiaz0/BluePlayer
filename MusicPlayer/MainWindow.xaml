@@ -16,6 +16,7 @@
                 <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" Text="Path " HorizontalAlignment="Center" Width="167"/>
                 <Button x:Name="OkBtn" Content="OK" Click="OkBtn_Click"/>
             </StackPanel>
+            
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
                 <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White" />
                 <WrapPanel HorizontalAlignment="Center">
@@ -27,7 +28,7 @@
                 </WrapPanel>
             </StackPanel>
 
-            <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" Height="Auto" MinWidth="622" MinHeight="380" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
+            <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="25"/>
