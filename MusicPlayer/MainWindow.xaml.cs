@@ -5,12 +5,14 @@ using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -30,10 +32,15 @@ namespace MusicPlayer
 		public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
 		private readonly MediaPlayer mediaPlayer = new MediaPlayer();
 		private int maxSongs = 0;
+        private bool isPlaying;
+        private bool isDraggingSlider;
 
 		private int currentSongNumber = 0;
 
-		public MainWindow()
+        private GridViewColumnHeader listViewSortCol = null;
+        private SortAdorner listViewSortAdorner = null;
+
+        public MainWindow()
 		{
 			InitializeComponent();
 
@@ -52,24 +59,22 @@ namespace MusicPlayer
 
 		private void Timer_Tick(object sender, EventArgs e)
 		{
-			if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
-				lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
-			else
-				lblStatus.Content = "No file selected...";
+			if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan && isDraggingSlider == false)
+            {
+                sliProgress.Minimum = 0;
+                sliProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                sliProgress.Value = mediaPlayer.Position.TotalSeconds;
+            }
 		}
 
 		private void BtnPlay_Click(object sender, RoutedEventArgs e)
 		{
-			mediaPlayer.Play();
-		}
-
-		private void BtnPause_Click(object sender, RoutedEventArgs e)
-		{
-			mediaPlayer.Pause();
+            mediaPlayer.PlayWithPause(ref isPlaying);
 		}
 
 		private void BtnStop_Click(object sender, RoutedEventArgs e)
 		{
+            isPlaying = false;
 			mediaPlayer.Stop();
 		}
 
@@ -94,6 +99,7 @@ namespace MusicPlayer
 			if (shouldPlay)
 			{
 				mediaPlayer.Play();
+                isPlaying = true;
 			}
 		}
 
@@ -212,12 +218,16 @@ namespace MusicPlayer
 
 		private void BtnSkip_Click(object sender, RoutedEventArgs e)
 		{
+            if (musicTracks.Count < 0)
+            {
+                return;
+            }
+
 			currentSongNumber += 1;
 
 			if (currentSongNumber > musicTracks.Count - 1)
 			{
 				currentSongNumber = 0;
-				return;
 			}
 
 			UpdateMusic(musicTracks[currentSongNumber], true);
@@ -225,12 +235,16 @@ namespace MusicPlayer
 
 		private void BtnBack_Click(object sender, RoutedEventArgs e)
 		{
+            if (musicTracks.Count < 0)
+            {
+                return;
+            }
+
 			currentSongNumber -= 1;
 
-			if (currentSongNumber < 1)
+			if (currentSongNumber < 0)
 			{
 				currentSongNumber = musicTracks.Count - 1;
-				return;
 			}
 			UpdateMusic(musicTracks[currentSongNumber], true);
 		}
@@ -254,20 +268,46 @@ namespace MusicPlayer
 			}
 		}
 
-		/*
-		private void AllMusicTracks_SelectedItem(object sender, RoutedEventArgs e)
-		{
-			if (Keyboard.IsKeyDown(Key.Enter))
-			{
-				if (((FrameworkElement)e.OriginalSource).DataContext is MusicTrack item)
-				{
-					currentSongNumber = item.ID;
-					UpdateMusic(item, true);
-				}
-			}
-		}
-		*/
+        private void AllMusicTracksColumn_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader column = (sender as GridViewColumnHeader);
+            string sortBy = column.Tag.ToString();
+            if (listViewSortCol != null)
+            {
+                AdornerLayer.GetAdornerLayer(listViewSortCol).Remove(listViewSortAdorner);
+                AllMusicTracks.Items.SortDescriptions.Clear();
+            }
 
-		
-	}
+            ListSortDirection newDir = ListSortDirection.Ascending;
+            if (listViewSortCol == column && listViewSortAdorner.Direction == newDir)
+                newDir = ListSortDirection.Descending;
+
+            listViewSortCol = column;
+            listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
+            AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
+            AllMusicTracks.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
+
+        }
+
+        private void sliProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
+        }
+
+        private void sliProgress_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            isDraggingSlider = false;
+            mediaPlayer.Position = TimeSpan.FromSeconds(sliProgress.Value);
+        }
+
+        private void sliProgress_DragStarted(object sender, DragStartedEventArgs e)
+        {
+            isDraggingSlider = true;
+        }
+
+        private void AllMusicTracks_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            mediaPlayer.Volume += (e.Delta > 0) ? 0.1 : -0.1;
+        }
+    }
 }

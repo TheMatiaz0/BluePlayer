@@ -16,25 +16,45 @@
                 <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" Text="Path " HorizontalAlignment="Center" Width="167"/>
                 <Button x:Name="OkBtn" Content="OK" Click="OkBtn_Click"/>
             </StackPanel>
-            
+
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
+                <Slider Name="sliProgress" Thumb.DragStarted="sliProgress_DragStarted"  Thumb.DragCompleted="sliProgress_DragCompleted" ValueChanged="sliProgress_ValueChanged" />
                 <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White" />
-                <WrapPanel HorizontalAlignment="Center">
-                    <Button Content="Back" Name="BtnBack" Click="BtnBack_Click" />
-                    <Button Content="Play" Name="BtnPlay" Click="BtnPlay_Click"/>
-                    <Button Content="Pause" Name="BtnPause" Click="BtnPause_Click"/>
-                    <Button Content="Stop" Name="BtnStop" Click="BtnStop_Click" />
-                    <Button Content="Skip" Name="BtnSkip" Click="BtnSkip_Click" />
-                </WrapPanel>
+
+                <UniformGrid Columns="4" VerticalAlignment="Center" Rows="1" HorizontalAlignment="Center">
+                    <Button x:Name="BtnBack" Content="Back" Click="BtnBack_Click" Width="70" VerticalAlignment="Center">
+                    </Button>
+                    <Button x:Name="BtnPlay" Content="Play" Click="BtnPlay_Click" Width="70" VerticalAlignment="Center">
+                    </Button>
+                    <Button Content="Stop" x:Name="BtnStop" Click="BtnStop_Click" Width="70" VerticalAlignment="Center"/>
+                    <Button Content="Skip" x:Name="BtnSkip" Click="BtnSkip_Click" Width="70" VerticalAlignment="Center"/>
+                </UniformGrid>
+
             </StackPanel>
 
-            <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
+            <ListView x:Name="AllMusicTracks" MouseWheel="AllMusicTracks_MouseWheel" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="25"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding SongName}" Header="Song" Width="385"/>
-                        <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Header="Artist" Width="155"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Extension}" Header="Extension" Width="55"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding ID}" Width="45">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="ID" Click="AllMusicTracksColumn_Click">ID</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding SongName}" Width="385">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="SongName" Click="AllMusicTracksColumn_Click">Song</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="155">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="Artist" Click="AllMusicTracksColumn_Click">Artist</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Extension}" Width="55">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="Extension" Click="AllMusicTracksColumn_Click">Extension</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

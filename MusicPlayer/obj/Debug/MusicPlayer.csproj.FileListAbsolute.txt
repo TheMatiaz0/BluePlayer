@@ -32,3 +32,8 @@ F:\PROJEKTY\Languages\C#\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPIC
 F:\PROJEKTY\Languages\C#\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.xml
 F:\PROJEKTY\Languages\C#\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
 F:\PROJEKTY\Languages\C#\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.CopyComplete
+D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.dll
+D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.xml
+D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.CopyComplete
