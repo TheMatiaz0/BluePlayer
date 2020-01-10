@@ -13,12 +13,14 @@
                 <Separator Opacity="0" Height="5"/>
                 <Button x:Name="Files" Content="Files" Background="{x:Null}" BorderBrush="Black" Click="Files_Click"/>
                 <Separator Opacity="0" Height="60" />
-                <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" Text="Path " HorizontalAlignment="Center" Width="167"/>
+                <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" FontSize="10" Text="Path " HorizontalAlignment="Center" Width="167"/>
                 <Button x:Name="OkBtn" Content="OK" Click="OkBtn_Click"/>
+                <Button x:Name="SaveBtn" Content="Save" Click="SaveBtn_Click"/>
+                <Button x:Name="LoadBtn" Content="Load" Click="LoadBtn_Click"/>
             </StackPanel>
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
-                <Slider Name="sliProgress" Thumb.DragStarted="sliProgress_DragStarted"  Thumb.DragCompleted="sliProgress_DragCompleted" ValueChanged="sliProgress_ValueChanged" />
+                <Slider Name="ClipProgress" Thumb.DragStarted="ClipProgress_DragStarted"  Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" IsMoveToPointEnabled="True" AutoToolTipPlacement="BottomRight" ToolTipOpening="ClipProgress_ToolTipOpening" />
                 <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White" />
 
                 <UniformGrid Columns="4" VerticalAlignment="Center" Rows="1" HorizontalAlignment="Center">
