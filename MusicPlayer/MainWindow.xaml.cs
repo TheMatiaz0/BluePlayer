@@ -32,9 +32,10 @@ namespace MusicPlayer
     {
         public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
         private readonly MediaPlayer mediaPlayer = new MediaPlayer();
-        private int maxSongs = 0;
+        // private int maxSongs = 0;
         private bool isPlaying;
         private bool isDraggingSlider;
+        private bool isLooped = false;
 
         private int currentSongNumber = 0;
 
@@ -59,10 +60,10 @@ namespace MusicPlayer
 				
 				if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan && isDraggingSlider == false)
 				{
-					ClipProgress.Minimum = 0;
-					ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-					ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
-				}
+                    ClipProgress.Minimum = 0;
+                    ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                    ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
+                }
 			}
 		}
 
@@ -98,6 +99,8 @@ namespace MusicPlayer
             if (shouldPlay)
             {
                 mediaPlayer.Play();
+
+
                 isPlaying = true;
             }
         }
@@ -142,7 +145,6 @@ namespace MusicPlayer
                                         where ext == ".mp3" || ext == ".wav"
                                         select item).ToArray();
 
-            maxSongs = 0;
             foreach (string item in foundSoundFiles)
             {
                 AddFile(item);
@@ -187,13 +189,10 @@ namespace MusicPlayer
             }
 
 
-            musicTracks.Add(new MusicTrack(maxSongs, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
-
-            maxSongs += 1;
+            musicTracks.Add(new MusicTrack(musicTracks.Count, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
         }
 
-
-        private void BtnSkip_Click(object sender, RoutedEventArgs e)
+        private void Skip ()
         {
             if (musicTracks.Count <= 0)
             {
@@ -208,6 +207,11 @@ namespace MusicPlayer
             }
 
             UpdateMusic(musicTracks[currentSongNumber], true);
+        }
+
+        private void BtnSkip_Click(object sender, RoutedEventArgs e)
+        {
+            Skip();
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -270,10 +274,12 @@ namespace MusicPlayer
 
         private void ClipProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-			TimeSpan x = TimeSpan.FromSeconds(e.NewValue);
-			ClipProgress.ToolTipContent = $"{(int)x.Minutes}:{x.Seconds:00}";
+            if (mediaPlayer.Position.TotalSeconds >= mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds)
+            {
+                Skip();
+            }
 
-			if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
+            if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
             {
                 lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
             }
@@ -282,6 +288,9 @@ namespace MusicPlayer
             {
                 lblStatus.Content = "Not playing...";
             }
+
+            TimeSpan x = TimeSpan.FromSeconds(e.NewValue);
+            ClipProgress.ToolTipContent = $"{(int)x.Minutes}:{x.Seconds:00}";
 
         }
 
@@ -294,11 +303,6 @@ namespace MusicPlayer
         private void ClipProgress_DragStarted(object sender, DragStartedEventArgs e)
         {
             isDraggingSlider = true;
-        }
-
-        private void AllMusicTracks_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            mediaPlayer.Volume += (e.Delta > 0) ? 0.1 : -0.1;
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
@@ -343,5 +347,10 @@ namespace MusicPlayer
 		{
 			mediaPlayer.Volume = e.NewValue;
 		}
-	}
+
+        private void BtnLoop_Click(object sender, RoutedEventArgs e)
+        {
+            isLooped = !isLooped;
+        }
+    }
 }

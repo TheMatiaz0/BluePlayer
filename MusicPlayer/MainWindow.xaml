@@ -25,8 +25,9 @@
                 <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White" />
 
 
-                <Grid VerticalAlignment="Center" HorizontalAlignment="Center" ShowGridLines="True">
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -39,11 +40,12 @@
                     <Button x:Name="BtnPlay" Content="Play" Click="BtnPlay_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto"/>
                     <Button Content="Stop" x:Name="BtnStop" Click="BtnStop_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3" Width="Auto"/>
                     <Button Content="Skip" x:Name="BtnSkip" Click="BtnSkip_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Width="Auto"/>
+                    <Button Content="Loop" x:Name="BtnLoop" Click="BtnLoop_Click"  MinWidth="40" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5" Width="Auto"/>
                 </Grid>
 
             </StackPanel>
 
-            <ListView x:Name="AllMusicTracks" MouseWheel="AllMusicTracks_MouseWheel" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
+            <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding ID}" Width="45">
