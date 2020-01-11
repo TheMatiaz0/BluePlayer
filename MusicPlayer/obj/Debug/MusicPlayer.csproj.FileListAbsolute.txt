@@ -37,3 +37,4 @@ D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAP
 D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.xml
 D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
 D:\PROJEKTY\C#\MusicPlayer\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.CopyComplete
+F:\PROJEKTY\Languages\C#\MusicPlayer\MusicPlayer\obj\Debug\GeneratedInternalTypeHelper.g.cs

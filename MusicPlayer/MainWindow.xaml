@@ -20,17 +20,26 @@
             </StackPanel>
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
-                <Slider Name="ClipProgress" Thumb.DragStarted="ClipProgress_DragStarted"  Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" IsMoveToPointEnabled="True" AutoToolTipPlacement="BottomRight" ToolTipOpening="ClipProgress_ToolTipOpening" />
+                <local:FormattedSlider x:Name="ClipProgress" Thumb.DragStarted="ClipProgress_DragStarted" Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" IsMoveToPointEnabled="True" AutoToolTipPlacement="BottomRight">
+                </local:FormattedSlider>
                 <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White" />
 
-                <UniformGrid Columns="4" VerticalAlignment="Center" Rows="1" HorizontalAlignment="Center">
-                    <Button x:Name="BtnBack" Content="Back" Click="BtnBack_Click" Width="70" VerticalAlignment="Center">
-                    </Button>
-                    <Button x:Name="BtnPlay" Content="Play" Click="BtnPlay_Click" Width="70" VerticalAlignment="Center">
-                    </Button>
-                    <Button Content="Stop" x:Name="BtnStop" Click="BtnStop_Click" Width="70" VerticalAlignment="Center"/>
-                    <Button Content="Skip" x:Name="BtnSkip" Click="BtnSkip_Click" Width="70" VerticalAlignment="Center"/>
-                </UniformGrid>
+
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Center" ShowGridLines="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Slider x:Name="VolumeSlider" AutoToolTipPrecision="2" HorizontalAlignment="Left" Width="94" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Grid.Column="0" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5"/>
+                    <Button x:Name="BtnBack" Content="Back" Click="BtnBack_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Width="Auto"/>
+                    <Button x:Name="BtnPlay" Content="Play" Click="BtnPlay_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto"/>
+                    <Button Content="Stop" x:Name="BtnStop" Click="BtnStop_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3" Width="Auto"/>
+                    <Button Content="Skip" x:Name="BtnSkip" Click="BtnSkip_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Width="Auto"/>
+                </Grid>
 
             </StackPanel>
 

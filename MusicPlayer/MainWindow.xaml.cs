@@ -44,29 +44,27 @@ namespace MusicPlayer
         public MainWindow()
         {
             InitializeComponent();
-
-            DispatcherTimer timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-
-            timer.Tick += Timer_Tick;
-            timer.Start();
+			_ = Update();
 
             AllMusicTracks.ItemsSource = musicTracks;
 
             DataContext = this;
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan && isDraggingSlider == false)
-            {
-                ClipProgress.Minimum = 0;
-                ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
-            }
-        }
+		private async Task Update ()
+		{
+			while (true)
+			{
+				await Task.Delay(TimeSpan.FromMilliseconds(500));
+				
+				if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan && isDraggingSlider == false)
+				{
+					ClipProgress.Minimum = 0;
+					ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+					ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
+				}
+			}
+		}
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
@@ -158,8 +156,8 @@ namespace MusicPlayer
             string finalCreator = "";
 
             ShellObject shellFile = ShellObject.FromParsingName(path);
-            creators = GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
-            songName = GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
+            creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
+            songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
 
             if (string.IsNullOrEmpty(songName))
             {
@@ -169,20 +167,18 @@ namespace MusicPlayer
                 songName = result.Replace(System.IO.Path.GetExtension(result), "");
             }
 
+
             if (creators != null)
             {
-                foreach (string item2 in creators)
-                {
-                    if (creators.Length > 1)
-                    {
-                        finalCreator += $"{item2}, ";
-                    }
+				StringBuilder builder = new StringBuilder();
 
-                    else
-                    {
-                        finalCreator = item2;
-                    }
+				foreach (string item2 in creators)
+                {
+					builder.Append($"{item2},");
                 }
+
+				builder.Remove(builder.Length - 1, 1);
+				finalCreator = builder.ToString();
             }
 
             else
@@ -197,30 +193,9 @@ namespace MusicPlayer
         }
 
 
-
-        private static string GetValue(IShellProperty value)
-        {
-            if (value == null || value.ValueAsObject == null)
-            {
-                return String.Empty;
-            }
-
-            return value.ValueAsObject.ToString();
-        }
-
-        private static string[] GetValues(IShellProperty value)
-        {
-            if (value == null || value.ValueAsObject == null)
-            {
-                return null;
-            }
-
-            return (string[])value.ValueAsObject;
-        }
-
         private void BtnSkip_Click(object sender, RoutedEventArgs e)
         {
-            if (musicTracks.Count < 0)
+            if (musicTracks.Count <= 0)
             {
                 return;
             }
@@ -237,7 +212,7 @@ namespace MusicPlayer
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            if (musicTracks.Count < 0)
+            if (musicTracks.Count <= 0)
             {
                 return;
             }
@@ -295,7 +270,10 @@ namespace MusicPlayer
 
         private void ClipProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
+			TimeSpan x = TimeSpan.FromSeconds(e.NewValue);
+			ClipProgress.ToolTipContent = $"{(int)x.Minutes}:{x.Seconds:00}";
+
+			if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
             {
                 lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
             }
@@ -361,9 +339,9 @@ namespace MusicPlayer
             }
         }
 
-        private void ClipProgress_ToolTipOpening(object sender, ToolTipEventArgs e)
-        {
-
-        }
-    }
+		private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			mediaPlayer.Volume = e.NewValue;
+		}
+	}
 }
