@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Matiaz's Music Player" Height="450" Width="770">
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Left" Background="LightGray" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="167" Margin="0">

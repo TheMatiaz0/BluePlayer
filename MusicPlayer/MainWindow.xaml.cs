@@ -45,27 +45,54 @@ namespace MusicPlayer
         public MainWindow()
         {
             InitializeComponent();
-			_ = Update();
+            _ = Update();
 
             AllMusicTracks.ItemsSource = musicTracks;
+            mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
+            mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
 
             DataContext = this;
         }
 
-		private async Task Update ()
-		{
-			while (true)
-			{
-				await Task.Delay(TimeSpan.FromMilliseconds(500));
-				
-				if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan && isDraggingSlider == false)
-				{
-                    ClipProgress.Minimum = 0;
-                    ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                    ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
+        private void MediaPlayer_MediaEnded(object sender, EventArgs e)
+        {
+            if (!isLooped)
+            {
+                Skip();
+            }
+            else
+            {
+                PlaySameMusic();
+            }
+
+        }
+
+        private void MediaPlayer_MediaOpened(object sender, EventArgs e)
+        {
+            ClipProgress.Minimum = 0;
+            ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+
+        }
+
+        private async Task Update()
+        {
+            while (true)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+                if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
+                {
+                    if (isDraggingSlider == false)
+                    {
+                        ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
+                    }
+                    lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
+
                 }
-			}
-		}
+
+
+            }
+        }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
@@ -93,7 +120,7 @@ namespace MusicPlayer
             {
                 return;
             }
-
+      
             mediaPlayer.Open(new Uri(music.Path));
 
             if (shouldPlay)
@@ -151,7 +178,7 @@ namespace MusicPlayer
             }
         }
 
-        private void AddFile (string path)
+        private void AddFile(string path)
         {
             string[] creators = new string[0];
             string songName = string.Empty;
@@ -172,15 +199,15 @@ namespace MusicPlayer
 
             if (creators != null)
             {
-				StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new StringBuilder();
 
-				foreach (string item2 in creators)
+                foreach (string item2 in creators)
                 {
-					builder.Append($"{item2},");
+                    builder.Append($"{item2},");
                 }
 
-				builder.Remove(builder.Length - 1, 1);
-				finalCreator = builder.ToString();
+                builder.Remove(builder.Length - 1, 1);
+                finalCreator = builder.ToString();
             }
 
             else
@@ -192,7 +219,12 @@ namespace MusicPlayer
             musicTracks.Add(new MusicTrack(musicTracks.Count, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
         }
 
-        private void Skip ()
+        private void PlaySameMusic()
+        {
+            UpdateMusic(musicTracks[currentSongNumber], true);
+        }
+
+        private void Skip()
         {
             if (musicTracks.Count <= 0)
             {
@@ -211,7 +243,16 @@ namespace MusicPlayer
 
         private void BtnSkip_Click(object sender, RoutedEventArgs e)
         {
-            Skip();
+            if (!isLooped)
+            {
+                Skip();
+            }
+
+            else
+            {
+                PlaySameMusic();
+            }
+
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -274,21 +315,6 @@ namespace MusicPlayer
 
         private void ClipProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (mediaPlayer.Position.TotalSeconds >= mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds)
-            {
-                Skip();
-            }
-
-            if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
-            {
-                lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
-            }
-
-            else
-            {
-                lblStatus.Content = "Not playing...";
-            }
-
             TimeSpan x = TimeSpan.FromSeconds(e.NewValue);
             ClipProgress.ToolTipContent = $"{(int)x.Minutes}:{x.Seconds:00}";
 
@@ -343,10 +369,10 @@ namespace MusicPlayer
             }
         }
 
-		private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			mediaPlayer.Volume = e.NewValue;
-		}
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            mediaPlayer.Volume = e.NewValue;
+        }
 
         private void BtnLoop_Click(object sender, RoutedEventArgs e)
         {
