@@ -48,6 +48,7 @@ namespace MusicPlayer
             _ = Update();
 
             AllMusicTracks.ItemsSource = musicTracks;
+
             mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
 
@@ -87,10 +88,7 @@ namespace MusicPlayer
                         ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
                     }
                     lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
-
                 }
-
-
             }
         }
 
@@ -126,8 +124,6 @@ namespace MusicPlayer
             if (shouldPlay)
             {
                 mediaPlayer.Play();
-
-
                 isPlaying = true;
             }
         }
@@ -180,15 +176,11 @@ namespace MusicPlayer
 
         private void AddFile(string path)
         {
-            string[] creators = new string[0];
-            string songName = string.Empty;
-            string finalCreator = "";
+			ShellObject shellFile = ShellObject.FromParsingName(path);
+			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
+			string songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
 
-            ShellObject shellFile = ShellObject.FromParsingName(path);
-            creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
-            songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
-
-            if (string.IsNullOrEmpty(songName))
+			if (string.IsNullOrEmpty(songName))
             {
                 int pos = path.LastIndexOf("\\") + 1;
                 string result = new string(path.Skip(pos).ToArray());
@@ -196,27 +188,27 @@ namespace MusicPlayer
                 songName = result.Replace(System.IO.Path.GetExtension(result), "");
             }
 
+			string finalCreator;
+			if (creators != null)
+			{
+				StringBuilder builder = new StringBuilder();
 
-            if (creators != null)
-            {
-                StringBuilder builder = new StringBuilder();
+				foreach (string item2 in creators)
+				{
+					builder.Append($"{item2},");
+				}
 
-                foreach (string item2 in creators)
-                {
-                    builder.Append($"{item2},");
-                }
+				builder.Remove(builder.Length - 1, 1);
+				finalCreator = builder.ToString();
+			}
 
-                builder.Remove(builder.Length - 1, 1);
-                finalCreator = builder.ToString();
-            }
-
-            else
-            {
-                finalCreator = "NaN";
-            }
+			else
+			{
+				finalCreator = "NaN";
+			}
 
 
-            musicTracks.Add(new MusicTrack(musicTracks.Count, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
+			musicTracks.Add(new MusicTrack(musicTracks.Count, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
         }
 
         private void PlaySameMusic()
@@ -352,16 +344,11 @@ namespace MusicPlayer
 
         private void LoadBtn_Click(object sender, RoutedEventArgs e)
         {
-            Playlist playlist = new Playlist
-            {
-                musicTracks = new List<MusicTrack>()
-            };
-
-            XmlSerializer xsl = new XmlSerializer(typeof(Playlist));
+			XmlSerializer xsl = new XmlSerializer(typeof(Playlist));
             StreamReader stream = new StreamReader(@"D:\test.xml");
 
-            playlist = (Playlist)xsl.Deserialize(stream);
-            stream.Close();
+			Playlist playlist = (Playlist)xsl.Deserialize(stream);
+			stream.Close();
 
             foreach (MusicTrack item in playlist.musicTracks)
             {
