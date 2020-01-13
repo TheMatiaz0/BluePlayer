@@ -3,9 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:MusicPlayer"
         mc:Ignorable="d"
-        Title="Matiaz's Music Player" Height="450" Width="770">
+        Title="Matiaz's Music Player" Height="500" Width="900"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="White"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="25"
+        FontFamily="{materialDesign:MaterialDesignFont}" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" WindowStyle="ToolWindow">
+
+    <materialDesign:Card VerticalAlignment="Stretch" UniformCornerRadius="5">
+        <Grid>
+            <materialDesign:Card UniformCornerRadius="5" Width="600" Height="130">
+                <materialDesign:Card.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <LinearGradientBrush.Transform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="240"/>
+                                <TranslateTransform X="60"/>
+                            </TransformGroup>
+                        </LinearGradientBrush.Transform>
+                        <GradientStop Color="#FF0764D6" Offset="0.455"/>
+                        <GradientStop Color="#FF06094D" Offset="1"/>
+                        <GradientStop Color="White" Offset="0.055"/>
+                    </LinearGradientBrush>
+                </materialDesign:Card.Background>
+                <Grid ShowGridLines="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Ellipse ClipToBounds="False" Width="122" Height="120" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2" Fill="Red" StrokeThickness="6" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                </Grid>
+            </materialDesign:Card>
+
+        </Grid>
+    </materialDesign:Card>
+
+
+
+    <!--
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Left" Opacity="25" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="167" Margin="0" Background="#66000000">
@@ -48,7 +94,11 @@
 
                     <Slider x:Name="VolumeSlider" AutoToolTipPrecision="2" HorizontalAlignment="Left" Width="94" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Grid.Column="0" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5"/>
                     <Button x:Name="BtnBack" Content="Back" Click="BtnBack_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Width="Auto"/>
-                    <Button x:Name="BtnPlay" Content="Play" Click="BtnPlay_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto"/>
+                    <Button x:Name="BtnPlay" Click="BtnPlay_Click" MinWidth="60" Height="60" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="2" Width="Auto" BorderBrush="Transparent" Background="Transparent" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Graphics/pause2.png" Stretch="Uniform"></Image>
+                        </StackPanel>
+                    </Button>
                     <Button Content="Stop" x:Name="BtnStop" Click="BtnStop_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3" Width="Auto"/>
                     <Button Content="Skip" x:Name="BtnSkip" Click="BtnSkip_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Width="Auto"/>
                     <Button Content="Loop" x:Name="BtnLoop" Click="BtnLoop_Click"  MinWidth="40" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5" Width="Auto"/>
@@ -86,4 +136,5 @@
             </ListView>
         </DockPanel>
     </Grid>
+    -->
 </Window>

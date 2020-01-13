@@ -27,6 +27,7 @@ namespace MusicPlayer
 {
     public partial class MainWindow : Window
     {
+		/*
         public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
         private readonly MediaPlayer mediaPlayer = new MediaPlayer();
 
@@ -88,18 +89,6 @@ namespace MusicPlayer
             while (true)
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(500));
-
-                /*
-                if (AllMusicTracks.HasItems == false)
-                {
-                    AllMusicTracks.Opacity = 0;
-                }
-
-                else
-                {
-                    AllMusicTracks.Opacity = 100;
-                }
-                */
 
 
                 if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
@@ -432,5 +421,6 @@ namespace MusicPlayer
         {
             musicTracks = new ObservableCollection<MusicTrack>();
         }
+*/
     }
 }
