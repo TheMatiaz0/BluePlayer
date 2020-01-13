@@ -10,7 +10,7 @@ namespace MusicPlayer
     [XmlRoot("Music")]
     public class MusicTrack
     {
-        public MusicTrack(int id, string artist, string songName, string path, string extension = "MP3")
+        public MusicTrack(int id, string artist, string songName, string path, string extension = ".mp3")
         {
 			ID = id;
             Artist = artist;

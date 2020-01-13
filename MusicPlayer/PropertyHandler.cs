@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-class PropertyHandler
+public class PropertyHandler
 {
 	public static string GetValue(IShellProperty value)
 	{

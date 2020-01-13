@@ -68,6 +68,7 @@
     <Compile Include="FormattedSlider.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="PropertyHandler.cs" />
+    <Compile Include="SerializationXML.cs" />
     <Compile Include="SortAdorner.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

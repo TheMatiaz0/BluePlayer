@@ -8,21 +8,32 @@
         Title="Matiaz's Music Player" Height="450" Width="770">
     <Grid>
         <DockPanel>
-            <StackPanel DockPanel.Dock="Left" Background="LightGray" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="167" Margin="0">
-                <Button x:Name="Playlist" Content="Playlist" Background="{x:Null}" BorderBrush="Black" Click="Playlist_Click"/>
-                <Separator Opacity="0" Height="5"/>
-                <Button x:Name="Files" Content="Files" Background="{x:Null}" BorderBrush="Black" Click="Files_Click"/>
+            <StackPanel DockPanel.Dock="Left" Opacity="25" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="167" Margin="0" Background="#66000000">
                 <Separator Opacity="0" Height="60" />
-                <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" FontSize="10" Text="Path " HorizontalAlignment="Center" Width="167"/>
-                <Button x:Name="OkBtn" Content="OK" Click="OkBtn_Click"/>
-                <Button x:Name="SaveBtn" Content="Save" Click="SaveBtn_Click"/>
-                <Button x:Name="LoadBtn" Content="Load" Click="LoadBtn_Click"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" FontSize="11" Text="Path " HorizontalAlignment="Left" Width="111" Grid.Column="0"/>
+                    <Button x:Name="GetFileBtn" Content="Get" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="56"/>
+                </Grid>
+
+                <Button x:Name="OkBtn" Content="Add" Click="OkBtn_Click"/>
+                <Separator Opacity="0" Height="46" />
+                <Button x:Name="SaveBtn" Content="Create a new playlist" Click="SaveBtn_Click"/>
+                <Button x:Name="LoadBtn" Content="Load an existing playlist" Click="LoadBtn_Click"/>
             </StackPanel>
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
                 <local:FormattedSlider x:Name="ClipProgress" Thumb.DragStarted="ClipProgress_DragStarted" Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" IsMoveToPointEnabled="True" AutoToolTipPlacement="BottomRight">
                 </local:FormattedSlider>
-                <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White" />
+                <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White"/>
 
 
                 <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -45,7 +56,14 @@
 
             </StackPanel>
 
+
             <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
+               <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete a music track" Click="MenuItem_Click_1" x:Name="DeleteTrackMenuBtn"/>
+                        <MenuItem Header="Clear a playlist" x:Name="ClearPlaylistMenuBtn" Click="ClearPlaylistMenuBtn_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding ID}" Width="45">
@@ -61,11 +79,6 @@
                         <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="155">
                             <GridViewColumn.Header>
                                 <GridViewColumnHeader Tag="Artist" Click="AllMusicTracksColumn_Click">Artist</GridViewColumnHeader>
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Extension}" Width="55">
-                            <GridViewColumn.Header>
-                                <GridViewColumnHeader Tag="Extension" Click="AllMusicTracksColumn_Click">Extension</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
                     </GridView>

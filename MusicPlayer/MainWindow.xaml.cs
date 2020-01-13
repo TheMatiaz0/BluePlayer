@@ -25,17 +25,16 @@ using System.Xml.Serialization;
 
 namespace MusicPlayer
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
         private readonly MediaPlayer mediaPlayer = new MediaPlayer();
-        // private int maxSongs = 0;
+
         private bool isPlaying;
         private bool isDraggingSlider;
         private bool isLooped = false;
+
+        public string pathToFirstSong;
 
         private int currentSongNumber = 0;
 
@@ -52,27 +51,36 @@ namespace MusicPlayer
             mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
 
+            if (!string.IsNullOrWhiteSpace(pathToFirstSong))
+            {
+                _ = AddFileAsync(pathToFirstSong);
+            }
+
             DataContext = this;
         }
 
-        private void MediaPlayer_MediaEnded(object sender, EventArgs e)
+        private void TryLoop ()
         {
             if (!isLooped)
             {
                 Skip();
             }
+
             else
             {
                 PlaySameMusic();
             }
+        }
 
+        private void MediaPlayer_MediaEnded(object sender, EventArgs e)
+        {
+            TryLoop();
         }
 
         private void MediaPlayer_MediaOpened(object sender, EventArgs e)
         {
             ClipProgress.Minimum = 0;
             ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-
         }
 
         private async Task Update()
@@ -80,6 +88,19 @@ namespace MusicPlayer
             while (true)
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+                /*
+                if (AllMusicTracks.HasItems == false)
+                {
+                    AllMusicTracks.Opacity = 0;
+                }
+
+                else
+                {
+                    AllMusicTracks.Opacity = 100;
+                }
+                */
+
 
                 if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
                 {
@@ -103,16 +124,7 @@ namespace MusicPlayer
             mediaPlayer.Stop();
         }
 
-        private void Files_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Playlist_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UpdateMusic(MusicTrack music, bool shouldPlay = false)
+        private void ChangeMusicTrack(MusicTrack music, bool shouldPlay = false)
         {
             if (music == null)
             {
@@ -128,7 +140,7 @@ namespace MusicPlayer
             }
         }
 
-        private void OkBtn_Click(object sender, RoutedEventArgs e)
+        private void GetFileBtn_Click(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog
             {
@@ -138,24 +150,18 @@ namespace MusicPlayer
 
             if (result == CommonFileDialogResult.Ok)
             {
-                GetFiles(dialog.FileName);
                 PathInput.Text = dialog.FileName;
-
-                try
-                {
-                    UpdateMusic(musicTracks[currentSongNumber]);
-                }
-
-                catch (Exception f)
-                {
-                    MessageBox.Show(f.Message);
-                }
-
             }
 
+            dialog.Dispose();
         }
 
-        public void GetFiles(string input)
+        private void OkBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FindAndAddFiles(PathInput.Text);
+        }
+
+        public void FindAndAddFiles(string input)
         {
             musicTracks = new ObservableCollection<MusicTrack>();
 
@@ -168,14 +174,35 @@ namespace MusicPlayer
                                         where ext == ".mp3" || ext == ".wav"
                                         select item).ToArray();
 
-            foreach (string item in foundSoundFiles)
+            foreach (string path in foundSoundFiles)
             {
-                AddFile(item);
+                AddFile(path);
+            }
+
+            try
+            {
+                ChangeMusicTrack(musicTracks[currentSongNumber]);
+            }
+
+            catch (Exception f)
+            {
+                MessageBox.Show(f.Message);
             }
         }
 
-        private void AddFile(string path)
+        public async Task AddFileAsync (string path)
         {
+            await Task.Delay(TimeSpan.FromSeconds(3));
+            AddFile(path);
+        }
+
+        public void AddFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return;
+            }
+
 			ShellObject shellFile = ShellObject.FromParsingName(path);
 			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
 			string songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
@@ -193,9 +220,9 @@ namespace MusicPlayer
 			{
 				StringBuilder builder = new StringBuilder();
 
-				foreach (string item2 in creators)
+				foreach (string creatorName in creators)
 				{
-					builder.Append($"{item2},");
+					builder.Append($"{creatorName},");
 				}
 
 				builder.Remove(builder.Length - 1, 1);
@@ -213,7 +240,7 @@ namespace MusicPlayer
 
         private void PlaySameMusic()
         {
-            UpdateMusic(musicTracks[currentSongNumber], true);
+            ChangeMusicTrack(musicTracks[currentSongNumber], true);
         }
 
         private void Skip()
@@ -230,20 +257,12 @@ namespace MusicPlayer
                 currentSongNumber = 0;
             }
 
-            UpdateMusic(musicTracks[currentSongNumber], true);
+            ChangeMusicTrack(musicTracks[currentSongNumber], true);
         }
 
         private void BtnSkip_Click(object sender, RoutedEventArgs e)
         {
-            if (!isLooped)
-            {
-                Skip();
-            }
-
-            else
-            {
-                PlaySameMusic();
-            }
+            TryLoop();
 
         }
 
@@ -260,7 +279,7 @@ namespace MusicPlayer
             {
                 currentSongNumber = musicTracks.Count - 1;
             }
-            UpdateMusic(musicTracks[currentSongNumber], true);
+            ChangeMusicTrack(musicTracks[currentSongNumber], true);
         }
 
         private void AllMusicTracks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -268,7 +287,7 @@ namespace MusicPlayer
             if (((FrameworkElement)e.OriginalSource).DataContext is MusicTrack item)
             {
                 currentSongNumber = item.ID;
-                UpdateMusic(item, true);
+                ChangeMusicTrack(item, true);
             }
         }
 
@@ -277,9 +296,9 @@ namespace MusicPlayer
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                foreach (string item in files)
+                foreach (string path in files)
                 {
-                    AddFile(item);
+                    AddFile(path);
                 }
             }
         }
@@ -307,8 +326,8 @@ namespace MusicPlayer
 
         private void ClipProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            TimeSpan x = TimeSpan.FromSeconds(e.NewValue);
-            ClipProgress.ToolTipContent = $"{(int)x.Minutes}:{x.Seconds:00}";
+            TimeSpan previewTime = TimeSpan.FromSeconds(e.NewValue);
+            ClipProgress.ToolTipContent = $"{(int)previewTime.Minutes}:{previewTime.Seconds:00}";
 
         }
 
@@ -323,7 +342,7 @@ namespace MusicPlayer
             isDraggingSlider = true;
         }
 
-        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        private void SavePlaylist (string path)
         {
             Playlist playlist = new Playlist
             {
@@ -335,25 +354,58 @@ namespace MusicPlayer
                 playlist.musicTracks.Add(new MusicTrack(item.ID, item.Artist, item.SongName, item.Path, item.Extension));
             }
 
-            XmlSerializer xsl = new XmlSerializer(typeof(Playlist));
-            using (FileStream fs = new FileStream(@"D:\test.xml", FileMode.Create))
+            SerializationXML.SaveFile<Playlist>(path, playlist);
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                xsl.Serialize(fs, playlist);
+                Filter = "Playlist files (*.playlist)| *.playlist",
+                RestoreDirectory = true,
+                Title = "Browse XML playlist files",
+                FilterIndex = 2
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SavePlaylist(saveFileDialog.FileName);
             }
         }
 
-        private void LoadBtn_Click(object sender, RoutedEventArgs e)
+        private void LoadPlaylist(string path)
         {
-			XmlSerializer xsl = new XmlSerializer(typeof(Playlist));
-            StreamReader stream = new StreamReader(@"D:\test.xml");
+            StreamReader stream = new StreamReader(path);
 
-			Playlist playlist = (Playlist)xsl.Deserialize(stream);
-			stream.Close();
+            Playlist playlist = (Playlist)SerializationXML.LoadFile<Playlist>(stream);
+            stream.Close();
 
             foreach (MusicTrack item in playlist.musicTracks)
             {
                 AddFile(item.Path);
             }
+        }
+
+        private void LoadBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog loadFileDialog = new CommonOpenFileDialog
+            {
+                Multiselect = true
+            };
+            CommonFileDialogFilter filter = new CommonFileDialogFilter("Playlist files", "*.playlist");
+            loadFileDialog.Filters.Add(filter);
+
+            CommonFileDialogResult result = loadFileDialog.ShowDialog();
+
+            if (result == CommonFileDialogResult.Ok)
+            {
+                foreach (string item in loadFileDialog.FileNames)
+                {
+                    LoadPlaylist(item);
+                }
+            }
+
+            loadFileDialog.Dispose();
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -364,6 +416,21 @@ namespace MusicPlayer
         private void BtnLoop_Click(object sender, RoutedEventArgs e)
         {
             isLooped = !isLooped;
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (AllMusicTracks.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            musicTracks.RemoveAt(AllMusicTracks.SelectedIndex);
+        }
+
+        private void ClearPlaylistMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            musicTracks = new ObservableCollection<MusicTrack>();
         }
     }
 }
