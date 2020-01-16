@@ -30,9 +30,12 @@ namespace MusicPlayer
 		public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
 		private readonly MediaPlayer mediaPlayer = new MediaPlayer();
 
+		public static Random RND = new Random(); 
+
 		private bool isPlaying;
 		private bool isDraggingSlider;
 		private bool isLooped = false;
+		private bool isRandomized = false;
 
 		public string pathToFirstSong;
 
@@ -71,6 +74,7 @@ namespace MusicPlayer
 				PlaySameMusic();
 			}
 		}
+
 
 		private void MediaPlayer_MediaEnded(object sender, EventArgs e)
 		{
@@ -238,6 +242,12 @@ namespace MusicPlayer
 				return;
 			}
 
+			if (isRandomized)
+			{
+				PlayRandomTrack();
+				return;
+			}
+
 			currentSongNumber += 1;
 
 			if (currentSongNumber > musicTracks.Count - 1)
@@ -255,6 +265,12 @@ namespace MusicPlayer
 				return;
 			}
 
+			if (isRandomized)
+			{
+				PlayRandomTrack();
+				return;
+			}
+
 			currentSongNumber -= 1;
 
 			if (currentSongNumber < 0)
@@ -266,7 +282,7 @@ namespace MusicPlayer
 
 		private void BtnSkip_Click(object sender, RoutedEventArgs e)
 		{
-			TryLoop();
+			Skip();
 		}
 
 		private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -448,6 +464,17 @@ namespace MusicPlayer
 			AllMusicTracks.ItemsSource = musicTracks;
 
 			DataContext = this;
+		}
+
+		private void BtnRandom_Click(object sender, RoutedEventArgs e)
+		{
+			isRandomized = !isRandomized;
+		}
+
+		private void PlayRandomTrack ()
+		{
+			int index = RND.Next(musicTracks.Count + 1);
+			ChangeMusicTrack(musicTracks[index], true);
 		}
 	}
 }
