@@ -61,11 +61,13 @@ namespace MusicPlayer
 		{
 			if (!isLooped)
 			{
+				// BtnSkip.Foreground = Brushes.Purple;
 				Skip();
 			}
 
 			else
 			{
+				// BtnSkip.Foreground = Brushes.LightPink;
 				PlaySameMusic();
 			}
 		}
