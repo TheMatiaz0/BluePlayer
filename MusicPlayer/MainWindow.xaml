@@ -448,7 +448,7 @@
                         </Button>
 
                         <Button x:Name="BtnPlay" Click="BtnPlay_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1" Width="Auto" BorderBrush="Transparent" Background="Transparent" >
-                            <materialDesign:PackIcon Kind="Play" Height="Auto" Width="Auto" Foreground="Purple" />
+                            <materialDesign:PackIcon Kind="{DynamicResource key1}"  Height="Auto" Width="Auto" Foreground="Purple" />
                         </Button>
 
                         <Button x:Name="BtnSkip" Click="BtnSkip_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto" Background="Transparent" BorderBrush="Transparent">

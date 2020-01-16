@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
@@ -30,9 +31,9 @@ namespace MusicPlayer
 		public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
 		private readonly MediaPlayer mediaPlayer = new MediaPlayer();
 
-		public static Random RND = new Random(); 
+		public static Random RND = new Random();
 
-		private bool isPlaying;
+        private bool isPlaying;
 		private bool isDraggingSlider;
 		private bool isLooped = false;
 		private bool isRandomized = false;
@@ -108,7 +109,21 @@ namespace MusicPlayer
 		private void BtnPlay_Click(object sender, RoutedEventArgs e)
 		{
 			mediaPlayer.PlayWithPause(ref isPlaying);
+            CheckPlayStatus(isPlaying);
 		}
+
+        private void CheckPlayStatus (bool isPlaying)
+        {
+            if (isPlaying)
+            {
+                Application.Current.Resources["key1"] = PackIconKind.Pause;
+            }
+            else
+            {
+                Application.Current.Resources["key1"] = PackIconKind.Play;
+            }
+        }
+
 		private void ChangeMusicTrack(MusicTrack music, bool shouldPlay = false)
 		{
 			if (music == null)
@@ -122,6 +137,7 @@ namespace MusicPlayer
 			{
 				mediaPlayer.Play();
 				isPlaying = true;
+                CheckPlayStatus(true);
 			}
 		}
 
@@ -442,8 +458,6 @@ namespace MusicPlayer
 			{
 				return;
 			}
-
-			// dodać sprawdzanie usuwania - np. jeśli usuwasz track to zmieniaj currentTrack i zmień nutę.
 			RemoveMusicTrack(AllMusicTracks.SelectedIndex);
 		}
 
@@ -473,7 +487,8 @@ namespace MusicPlayer
 
 		private void PlayRandomTrack ()
 		{
-			int index = RND.Next(musicTracks.Count + 1);
+            int index = RND.Next(musicTracks.Count);
+			
 			ChangeMusicTrack(musicTracks[index], true);
 		}
 	}
