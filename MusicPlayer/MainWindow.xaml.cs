@@ -431,11 +431,6 @@ namespace MusicPlayer
 
 		private void RemoveMusicTrack (int index)
 		{
-			if (currentSongNumber == index)
-			{
-				Skip();
-			}
-
 			musicTracks.RemoveAt(index);
 		}
 
