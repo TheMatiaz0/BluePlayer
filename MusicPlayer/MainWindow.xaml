@@ -11,49 +11,10 @@
         Background="White"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" WindowStyle="ToolWindow">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" Icon="Graphics/pause2.png" ResizeMode="CanResizeWithGrip">
 
-    <materialDesign:Card VerticalAlignment="Stretch" UniformCornerRadius="5">
-        <Grid>
-            <materialDesign:Card UniformCornerRadius="5" Width="600" Height="130">
-                <materialDesign:Card.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <LinearGradientBrush.Transform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="240"/>
-                                <TranslateTransform X="60"/>
-                            </TransformGroup>
-                        </LinearGradientBrush.Transform>
-                        <GradientStop Color="#FF0764D6" Offset="0.455"/>
-                        <GradientStop Color="#FF06094D" Offset="1"/>
-                        <GradientStop Color="White" Offset="0.055"/>
-                    </LinearGradientBrush>
-                </materialDesign:Card.Background>
-                <Grid ShowGridLines="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Ellipse ClipToBounds="False" Width="122" Height="120" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="2" Fill="Red" StrokeThickness="6" Grid.Column="0" Grid.ColumnSpan="2"/>
-
-                </Grid>
-            </materialDesign:Card>
-
-        </Grid>
-    </materialDesign:Card>
-
-
-
-    <!--
     <Grid>
-        <DockPanel>
+        <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Left" Opacity="25" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="167" Margin="0" Background="#66000000">
                 <Separator Opacity="0" Height="60" />
 
@@ -67,13 +28,23 @@
                     </Grid.RowDefinitions>
 
                     <TextBox x:Name="PathInput" Height="23" TextWrapping="Wrap" FontSize="11" Text="Path " HorizontalAlignment="Left" Width="111" Grid.Column="0"/>
-                    <Button x:Name="GetFileBtn" Content="Get" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="56"/>
+                    <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="56">
+                        <StackPanel Orientation="Horizontal" Width="70">
+                            <TextBlock Text="Get" FontSize="10"/>
+                            <materialDesign:PackIcon Kind="Folder" Width="10" Height="10" Foreground="Yellow"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
 
-                <Button x:Name="OkBtn" Content="Add" Click="OkBtn_Click"/>
+                <Button x:Name="OkBtn" Click="OkBtn_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Add" FontSize="16" />
+                        <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>
+                    </StackPanel>
+                </Button>
                 <Separator Opacity="0" Height="46" />
                 <Button x:Name="SaveBtn" Content="Create a new playlist" Click="SaveBtn_Click"/>
-                <Button x:Name="LoadBtn" Content="Load an existing playlist" Click="LoadBtn_Click"/>
+                <Button x:Name="LoadBtn" Content="Load a playlist" Click="LoadBtn_Click"/>
             </StackPanel>
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
@@ -82,33 +53,56 @@
                 <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White"/>
 
 
-                <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid VerticalAlignment="Center">
+                    
+                    
+                    
+                    
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Slider x:Name="VolumeSlider" AutoToolTipPrecision="2" HorizontalAlignment="Left" Width="94" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Grid.Column="0" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5"/>
-                    <Button x:Name="BtnBack" Content="Back" Click="BtnBack_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Width="Auto"/>
-                    <Button x:Name="BtnPlay" Click="BtnPlay_Click" MinWidth="60" Height="60" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="2" Width="Auto" BorderBrush="Transparent" Background="Transparent" >
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="../Graphics/pause2.png" Stretch="Uniform"></Image>
-                        </StackPanel>
+                    <Slider x:Name="VolumeSlider" AutoToolTipPrecision="2" VerticalAlignment="Center" HorizontalAlignment="Left" Width="130" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Grid.Column="0" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5"/>
+                    <Button x:Name="BtnLoop" Click="BtnLoop_Click"  MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="4" Width="Auto" Background="Transparent" BorderBrush="Transparent">
+                        <materialDesign:PackIcon Kind="Loop" Width="30" Height="30"/>
                     </Button>
-                    <Button Content="Stop" x:Name="BtnStop" Click="BtnStop_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3" Width="Auto"/>
-                    <Button Content="Skip" x:Name="BtnSkip" Click="BtnSkip_Click" MinWidth="70" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Width="Auto"/>
-                    <Button Content="Loop" x:Name="BtnLoop" Click="BtnLoop_Click"  MinWidth="40" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5" Width="Auto"/>
+
+
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="BtnBack" Click="BtnBack_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Width="Auto" BorderBrush="Transparent" Background="Transparent">
+                            <materialDesign:PackIcon Kind="ArrowLeft" Width="Auto" Height="Auto" />
+                        </Button>
+
+                        <Button x:Name="BtnPlay" Click="BtnPlay_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1" Width="Auto" BorderBrush="Transparent" Background="Transparent" >
+                            <materialDesign:PackIcon Kind="Play" Height="Auto" Width="Auto" />
+                        </Button>
+
+                        <Button x:Name="BtnSkip" Click="BtnSkip_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto" Background="Transparent" BorderBrush="Transparent">
+                            <materialDesign:PackIcon Kind="ArrowRight" Width="Auto" Height="Auto"/>
+                        </Button>
+
+                    </Grid>
+
+
+
                 </Grid>
+
+             
 
             </StackPanel>
 
 
             <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
-               <ListView.ContextMenu>
+                <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Delete a music track" Click="MenuItem_Click_1" x:Name="DeleteTrackMenuBtn"/>
                         <MenuItem Header="Clear a playlist" x:Name="ClearPlaylistMenuBtn" Click="ClearPlaylistMenuBtn_Click"/>
@@ -126,7 +120,7 @@
                                 <GridViewColumnHeader Tag="SongName" Click="AllMusicTracksColumn_Click">Song</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
-                        <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="155">
+                        <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="290">
                             <GridViewColumn.Header>
                                 <GridViewColumnHeader Tag="Artist" Click="AllMusicTracksColumn_Click">Artist</GridViewColumnHeader>
                             </GridViewColumn.Header>
@@ -136,5 +130,4 @@
             </ListView>
         </DockPanel>
     </Grid>
-    -->
 </Window>
