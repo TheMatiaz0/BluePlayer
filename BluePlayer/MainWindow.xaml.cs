@@ -33,7 +33,7 @@ namespace BluePlayer
 
 		public static Random RND = new Random();
 
-        private bool isPlaying;
+		private bool isPlaying;
 		private bool isDraggingSlider;
 		private bool isLooped = false;
 		private bool isRandomized = false;
@@ -103,22 +103,22 @@ namespace BluePlayer
 		private void BtnPlay_Click(object sender, RoutedEventArgs e)
 		{
 			mediaPlayer.PlayWithPause(ref isPlaying);
-            CheckPlayStatus(isPlaying);
+			CheckPlayStatus(isPlaying);
 		}
 
-        private void CheckPlayStatus (bool isPlaying)
-        {
-            if (isPlaying)
-            {
-                Application.Current.Resources["playPauseIcon"] = PackIconKind.Pause;
+		private void CheckPlayStatus(bool isPlaying)
+		{
+			if (isPlaying)
+			{
+				Application.Current.Resources["playPauseIcon"] = PackIconKind.Pause;
 				Application.Current.Resources["playBtnToolTip"] = "Pause";
-            }
-            else
-            {
-                Application.Current.Resources["playPauseIcon"] = PackIconKind.Play;
+			}
+			else
+			{
+				Application.Current.Resources["playPauseIcon"] = PackIconKind.Play;
 				Application.Current.Resources["playBtnToolTip"] = "Play";
 			}
-        }
+		}
 
 		private void ChangeMusicTrack(MusicTrack music, bool shouldPlay = false)
 		{
@@ -133,7 +133,7 @@ namespace BluePlayer
 			{
 				mediaPlayer.Play();
 				isPlaying = true;
-                CheckPlayStatus(true);
+				CheckPlayStatus(true);
 			}
 		}
 
@@ -264,7 +264,7 @@ namespace BluePlayer
 			ChangeMusicTrack(musicTracks[currentSongNumber], true);
 		}
 
-		private void Back ()
+		private void Back()
 		{
 			if (musicTracks.Count <= 0)
 			{
@@ -319,7 +319,7 @@ namespace BluePlayer
 			}
 		}
 
-		private string[] CheckSoundFiles (string[] paths)
+		private string[] CheckSoundFiles(string[] paths)
 		{
 			return (from item in paths
 					let ext = System.IO.Path.GetExtension(item)
@@ -465,9 +465,14 @@ namespace BluePlayer
 			RemoveMusicTrack(AllMusicTracks.SelectedIndex);
 		}
 
-		private void RemoveMusicTrack (int index)
+		private void RemoveMusicTrack(int index)
 		{
 			musicTracks.RemoveAt(index);
+		}
+
+		private void RemoveMusicTrack(MusicTrack track)
+		{
+			musicTracks.Remove(track);
 		}
 
 		private void ClearPlaylistMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -475,7 +480,7 @@ namespace BluePlayer
 			ClearPlaylist();
 		}
 
-		private void ClearPlaylist ()
+		private void ClearPlaylist()
 		{
 			musicTracks = new ObservableCollection<MusicTrack>();
 
@@ -490,9 +495,9 @@ namespace BluePlayer
 			SetVisibility(randomEnableDot, isRandomized);
 		}
 
-		private void PlayRandomTrack ()
+		private void PlayRandomTrack()
 		{
-            int index = RND.Next(musicTracks.Count);
+			int index = RND.Next(musicTracks.Count);
 			currentSongNumber = index;
 			ChangeMusicTrack(musicTracks[index], true);
 		}

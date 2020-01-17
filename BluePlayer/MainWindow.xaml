@@ -439,7 +439,7 @@
                     </Button>
 
 
-                    <Separator Height="30" Opacity="0" Grid.ColumnSpan="2"/>
+                    <Separator Height="40" Opacity="0" Grid.ColumnSpan="2"/>
                     <TextBlock Text="v. 1.0.0" Grid.Column="0" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
                 </Grid>
 
