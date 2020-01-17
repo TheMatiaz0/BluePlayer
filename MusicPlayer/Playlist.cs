@@ -1,4 +1,4 @@
-﻿using MusicPlayer;
+﻿using BluePlayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;

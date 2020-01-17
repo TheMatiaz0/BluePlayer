@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace MusicPlayer
+namespace BluePlayer
 {
 	public class FormattedSlider : Slider
 	{

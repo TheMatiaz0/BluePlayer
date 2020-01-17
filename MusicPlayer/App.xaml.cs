@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MusicPlayer
+namespace BluePlayer
 {
     public partial class App : Application
     {

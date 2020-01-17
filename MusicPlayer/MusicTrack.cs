@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace MusicPlayer
+namespace BluePlayer
 {
     [XmlRoot("Music")]
     public class MusicTrack

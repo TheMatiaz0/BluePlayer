@@ -1,8 +1,8 @@
-﻿<Application x:Class="MusicPlayer.App"
+﻿<Application x:Class="BluePlayer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:MusicPlayer"
+             xmlns:local="clr-namespace:BluePlayer"
              StartupUri="MainWindow.xaml"
              Startup="Application_Startup">
     <Application.Resources>

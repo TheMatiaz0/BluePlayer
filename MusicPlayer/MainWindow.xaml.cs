@@ -24,7 +24,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml.Serialization;
 
-namespace MusicPlayer
+namespace BluePlayer
 {
 	public partial class MainWindow : Window
 	{
@@ -38,8 +38,6 @@ namespace MusicPlayer
 		private bool isLooped = false;
 		private bool isRandomized = false;
 
-		public string pathToFirstSong;
-
 		private int currentSongNumber = 0;
 
 		private GridViewColumnHeader listViewSortCol = null;
@@ -52,11 +50,6 @@ namespace MusicPlayer
 
 			mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
 			mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
-
-			if (!string.IsNullOrWhiteSpace(pathToFirstSong))
-			{
-				_ = AddFileAsync(pathToFirstSong);
-			}
 
 			ClearPlaylist();
 
@@ -199,12 +192,6 @@ namespace MusicPlayer
 				}
 			}
 
-		}
-
-		public async Task AddFileAsync(string path)
-		{
-			await Task.Delay(TimeSpan.FromSeconds(3));
-			AddFile(path);
 		}
 
 		public void AddFile(string path)
