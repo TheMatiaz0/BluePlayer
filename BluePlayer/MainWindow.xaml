@@ -11,7 +11,7 @@
         Background="White"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Icon="../Graphics/BluePlayer256(4).png">
     <Window.Resources>
         <Style x:Key="FormattedSliderStyle1" TargetType="{x:Type local:FormattedSlider}">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
@@ -380,7 +380,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBox x:Name="PathInput" Height="Auto" TextWrapping="Wrap" FontSize="10" Text="Path " Foreground="White" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="111" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True"/>
-                    <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="60" Background="DarkSlateBlue" BorderBrush="Transparent">
+                    <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="60" Background="DarkSlateBlue" BorderBrush="Transparent" ToolTip="Get path to your folder with songs">
                         <StackPanel Orientation="Horizontal" Width="70">
                             <TextBlock Text="Get" FontSize="10"/>
                             <Separator Width="2" Opacity="0"/>
@@ -388,7 +388,7 @@
                         </StackPanel>
                     </Button>
 
-                    <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="1" Grid.ColumnSpan="2">
+                    <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="Add files from folder to playlist">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Add" FontSize="16" />
                             <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>

@@ -141,7 +141,8 @@ namespace BluePlayer
 		{
 			CommonOpenFileDialog dialog = new CommonOpenFileDialog
 			{
-				IsFolderPicker = true
+				IsFolderPicker = true,
+				Title = "Select path to a folder that contains a bunch of songs (.mp3, .m4a, .wav)"
 			};
 			CommonFileDialogResult result = dialog.ShowDialog();
 
@@ -200,6 +201,12 @@ namespace BluePlayer
 			{
 				return;
 			}
+
+			if (musicTracks.Any(item => item.Path == path) == true)
+			{
+				return;
+			}
+
 
 			ShellObject shellFile = ShellObject.FromParsingName(path);
 			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
@@ -319,11 +326,11 @@ namespace BluePlayer
 			}
 		}
 
-		private string[] CheckSoundFiles(string[] paths)
+		public string[] CheckSoundFiles(string[] paths)
 		{
 			return (from item in paths
 					let ext = System.IO.Path.GetExtension(item)
-					where ext == ".mp3" || ext == ".wav"
+					where ext == ".mp3" || ext == ".wav" || ext == ".m4a"
 					select item).ToArray();
 		}
 
@@ -388,7 +395,8 @@ namespace BluePlayer
 				Filter = "Playlist files (*.playlist)| *.playlist",
 				RestoreDirectory = true,
 				Title = "Browse XML playlist files",
-				FilterIndex = 2
+				FilterIndex = 2,
+				FileName = "BluePlayer_Playlist"
 			};
 
 			if (saveFileDialog.ShowDialog() == true)
@@ -414,7 +422,8 @@ namespace BluePlayer
 		{
 			CommonOpenFileDialog loadFileDialog = new CommonOpenFileDialog
 			{
-				Multiselect = true
+				Multiselect = true,
+				DefaultFileName = "BluePlayer_Playlist"
 			};
 			CommonFileDialogFilter filter = new CommonFileDialogFilter("Playlist files", "*.playlist");
 			loadFileDialog.Filters.Add(filter);
@@ -458,6 +467,8 @@ namespace BluePlayer
 
 		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
 		{
+			mediaPlayer.Stop();
+			mediaPlayer.Open(null);
 			if (AllMusicTracks.SelectedIndex == -1)
 			{
 				return;
@@ -470,13 +481,10 @@ namespace BluePlayer
 			musicTracks.RemoveAt(index);
 		}
 
-		private void RemoveMusicTrack(MusicTrack track)
-		{
-			musicTracks.Remove(track);
-		}
-
 		private void ClearPlaylistMenuBtn_Click(object sender, RoutedEventArgs e)
 		{
+			mediaPlayer.Stop();
+			mediaPlayer.Open(null);
 			ClearPlaylist();
 		}
 
@@ -504,7 +512,7 @@ namespace BluePlayer
 
 		private void GitHubBtn_Click(object sender, RoutedEventArgs e)
 		{
-			System.Diagnostics.Process.Start("https://github.com/TheMatiaz0/MusicPlayer");
+			System.Diagnostics.Process.Start("https://github.com/TheMatiaz0/BluePlayer");
 		}
 
 		private void MailBtn_Click(object sender, RoutedEventArgs e)

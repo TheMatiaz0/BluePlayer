@@ -10,23 +10,23 @@ using System.Windows;
 
 namespace BluePlayer
 {
-    public partial class App : Application
-    {
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
-            if (e.Args.Length == 1)
-            {
-				_ = WaitForApplicationLaunchFully(e.Args[0]);
+	public partial class App : Application
+	{
+		private void Application_Startup(object sender, StartupEventArgs e)
+		{
+			_ = WaitForApplicationLaunchFully(e.Args);
+		}
 
-			}
-        }
-
-		private async Task WaitForApplicationLaunchFully (string args)
+		private async Task WaitForApplicationLaunchFully(string[] args)
 		{
 			await AsyncExtension.WaitUntil(() => Current.MainWindow == null);
 
+			string[] foundSoundFiles = ((MainWindow)Current.MainWindow).CheckSoundFiles(args);
 
-			((MainWindow)Current.MainWindow).AddFile(args);
+			foreach (string path in foundSoundFiles)
+			{
+				((MainWindow)Current.MainWindow).AddFile(path);
+			}
 		}
-    }
+	}
 }
