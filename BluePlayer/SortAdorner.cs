@@ -10,10 +10,10 @@ using System.Windows.Media;
 
 public class SortAdorner : Adorner
 {
-    private static Geometry ascGeometry =
+    private static readonly Geometry ascGeometry =
         Geometry.Parse("M 0 4 L 3.5 0 L 7 4 Z");
 
-    private static Geometry descGeometry =
+    private static readonly Geometry descGeometry =
         Geometry.Parse("M 0 0 L 3.5 4 L 7 0 Z");
 
     public ListSortDirection Direction { get; private set; }

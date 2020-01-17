@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29306.81
+VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluePlayer", "MusicPlayer\BluePlayer.csproj", "{F53630DE-BCCD-43C2-BE05-3000898A042A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluePlayer", "BluePlayer\BluePlayer.csproj", "{F53630DE-BCCD-43C2-BE05-3000898A042A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8A48FF96-DC6F-4D39-B053-66FBF0F04BE9}
+		SolutionGuid = {646BA29C-B39A-4041-8269-D69B55107BD7}
 	EndGlobalSection
 EndGlobal

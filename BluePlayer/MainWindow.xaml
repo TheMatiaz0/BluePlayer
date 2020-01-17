@@ -11,7 +11,7 @@
         Background="White"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" Icon="Graphics/pause2.png" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350">
     <Window.Resources>
         <Style x:Key="FormattedSliderStyle1" TargetType="{x:Type local:FormattedSlider}">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
