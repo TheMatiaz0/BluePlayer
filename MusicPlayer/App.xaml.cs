@@ -16,10 +16,17 @@ namespace MusicPlayer
         {
             if (e.Args.Length == 1)
             {
-                // MessageBox.Show(e.Args[0]);
+				_ = WaitForApplicationLaunchFully(e.Args[0]);
 
-                // ((MainWindow)Current.MainWindow).pathToFirstSong = e.Args[0];
-            }
+			}
         }
+
+		private async Task WaitForApplicationLaunchFully (string args)
+		{
+			await AsyncExtension.WaitUntil(() => Current.MainWindow == null);
+
+
+			((MainWindow)Current.MainWindow).AddFile(args);
+		}
     }
 }

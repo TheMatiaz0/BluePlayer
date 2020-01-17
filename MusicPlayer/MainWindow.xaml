@@ -11,7 +11,7 @@
         Background="White"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" Icon="Graphics/pause2.png" ResizeMode="CanResizeWithGrip">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" Icon="Graphics/pause2.png" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350">
     <Window.Resources>
         <Style x:Key="FormattedSliderStyle1" TargetType="{x:Type local:FormattedSlider}">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
@@ -365,58 +365,84 @@
     </Window.Resources>
 
     <Grid>
-        <DockPanel LastChildFill="True">
-            <StackPanel DockPanel.Dock="Left" Opacity="25" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="167" Margin="0" Background="#66000000">
-                <Separator Opacity="0" Height="60" />
+        <DockPanel>
+            <Grid DockPanel.Dock="Left" Opacity="25" Background="#66000000">
 
-                <Grid>
+                
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBox x:Name="PathInput" Height="30" TextWrapping="Wrap" FontSize="11" Text="Path " HorizontalAlignment="Left" Width="111" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True"/>
-                    <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="56" Background="DarkSlateBlue" BorderBrush="Transparent">
+                    <TextBox x:Name="PathInput" Height="Auto" TextWrapping="Wrap" FontSize="10" Text="Path " HorizontalAlignment="Left" Width="111" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True"/>
+                    <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="60" Background="DarkSlateBlue" BorderBrush="Transparent">
                         <StackPanel Orientation="Horizontal" Width="70">
                             <TextBlock Text="Get" FontSize="10"/>
                             <materialDesign:PackIcon Kind="Folder" Width="10" Height="10" Foreground="Yellow"/>
                         </StackPanel>
                     </Button>
+
+                    <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="1" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Add" FontSize="16" />
+                            <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>
+                        </StackPanel>
+                    </Button>
+
                 </Grid>
 
-                <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Add" FontSize="16" />
-                        <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>
-                    </StackPanel>
-                </Button>
-                
-                <Separator Opacity="0" Height="46" />
-                
-                <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Create"/>
-                        <TextBlock Text="Create a playlist"/>
-                    </StackPanel>
-                </Button>
-                
-                <Separator Opacity="0" Height="5" />
-                <Button x:Name="LoadBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="LoadBtn_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="FileDownload"/>
-                        <TextBlock Text="Load a playlist"/>
-                    </StackPanel>
-                </Button>
-            
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Create"/>
+                            <TextBlock Text="Create a playlist"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="LoadBtn" Background="DarkSlateBlue" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" BorderBrush="Transparent" Click="LoadBtn_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FileDownload"/>
+                            <TextBlock Text="Load a playlist"/>
+                        </StackPanel>
+                    </Button>
+
+                </Grid>
+
                 <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                    <materialDesign:PackIcon/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="0" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
+                        <materialDesign:PackIcon  Kind="GithubCircle" Foreground="Black" Width="25" Height="25"/>
+                    </Button>
+
+                    <Button x:Name="MailBtn" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Grid.Row="0" Click="MailBtn_Click" ToolTip="Mail to TheMatiaz0@protonmail.com">
+                        <materialDesign:PackIcon Kind="EmailSend" Foreground="Black" BorderBrush="Red" Width="25" Height="25"/>
+                    </Button>
+
+
+                    <Separator Height="30" Opacity="0" Grid.ColumnSpan="2"/>
+                    <TextBlock Text="v. 1.0.0" Grid.Column="0" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
                 </Grid>
 
-
-            </StackPanel>
+            </Grid>
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
                 <local:FormattedSlider x:Name="ClipProgress" Foreground="Purple" Thumb.DragStarted="ClipProgress_DragStarted" Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" IsMoveToPointEnabled="True" AutoToolTipPlacement="BottomRight" Style="{DynamicResource FormattedSliderStyle1}">
@@ -438,7 +464,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Separator Width="5" Grid.Column="0" Opacity="0" />
-                        <Slider Grid.Column="1" x:Name="VolumeSlider" AutoToolTipPrecision="2" VerticalAlignment="Center" Foreground="Purple" Width="110" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5"/>
+                        <Slider Grid.Column="1" x:Name="VolumeSlider" AutoToolTipPrecision="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="Purple" MinWidth="110" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5"/>
 
                     </Grid>
 
@@ -450,16 +476,16 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="BtnBack" Click="BtnBack_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Width="Auto" BorderBrush="Transparent" Background="Transparent">
-                            <materialDesign:PackIcon Kind="ArrowLeft" Width="Auto" Height="Auto" Foreground="Purple"/>
+                        <Button x:Name="BtnBack" Click="BtnBack_Click" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Width="Auto" BorderBrush="Transparent" Background="Transparent" ToolTip="Previous">
+                            <materialDesign:PackIcon Kind="ArrowLeft" Width="Auto" Height="Auto" Foreground="Purple" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
 
-                        <Button x:Name="BtnPlay" Click="BtnPlay_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Width="Auto" BorderBrush="Transparent" Background="Transparent" >
-                            <materialDesign:PackIcon Kind="{DynamicResource key1}"  Height="Auto" Width="Auto" Foreground="Purple" />
+                        <Button x:Name="BtnPlay" Click="BtnPlay_Click" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Width="Auto" BorderBrush="Transparent" Background="Transparent" ToolTip="{DynamicResource playBtnToolTip}">
+                            <materialDesign:PackIcon Kind="{DynamicResource playPauseIcon}"  Height="Auto" Width="Auto" Foreground="Purple" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
 
-                        <Button x:Name="BtnSkip" Click="BtnSkip_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto" Background="Transparent" BorderBrush="Transparent">
-                            <materialDesign:PackIcon Kind="ArrowRight" Width="Auto" Height="Auto" Foreground="Purple"/>
+                        <Button x:Name="BtnSkip" Click="BtnSkip_Click" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto" Background="Transparent" BorderBrush="Transparent" ToolTip="Next">
+                            <materialDesign:PackIcon Kind="ArrowRight" Width="Auto" Height="Auto" Foreground="Purple" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
                     </Grid>
 
@@ -470,14 +496,14 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="BtnLoop" Click="BtnLoop_Click" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="0" Width="Auto" Background="Transparent" BorderBrush="Transparent">
+                        <Button x:Name="BtnLoop" Click="BtnLoop_Click" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="0" Width="Auto" Background="Transparent" BorderBrush="Transparent" ToolTip="Loop">
                             <StackPanel>
                                 <materialDesign:PackIcon Kind="Loop" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
                                 <materialDesign:PackIcon x:Name="loopEnableDot" Kind="Circle" VerticalAlignment="Center" HorizontalAlignment="Center" Width="7" Height="7" Foreground="Purple" Visibility="Collapsed"/>
                             </StackPanel>
                         </Button>
 
-                        <Button x:Name="BtnRandom" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="1" Width="Auto" Background="Transparent" BorderBrush="Transparent" Click="BtnRandom_Click">
+                        <Button x:Name="BtnRandom" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="1" Width="Auto" Background="Transparent" BorderBrush="Transparent" Click="BtnRandom_Click" ToolTip="Randomize">
                             <StackPanel>
                                 <materialDesign:PackIcon Kind="DieMultiple" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
                                 <materialDesign:PackIcon x:Name="randomEnableDot" Kind="Circle" VerticalAlignment="Center" HorizontalAlignment="Center" Width="7" Height="7" Foreground="Purple" Visibility="Collapsed"/>

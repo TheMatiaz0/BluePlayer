@@ -60,7 +60,8 @@ namespace MusicPlayer
 
 			ClearPlaylist();
 
-			Application.Current.Resources["key1"] = PackIconKind.Play;
+			Application.Current.Resources["playPauseIcon"] = PackIconKind.Play;
+			Application.Current.Resources["playBtnToolTip"] = "Play";
 		}
 
 		private void TryLoop()
@@ -116,12 +117,14 @@ namespace MusicPlayer
         {
             if (isPlaying)
             {
-                Application.Current.Resources["key1"] = PackIconKind.Pause;
+                Application.Current.Resources["playPauseIcon"] = PackIconKind.Pause;
+				Application.Current.Resources["playBtnToolTip"] = "Pause";
             }
             else
             {
-                Application.Current.Resources["key1"] = PackIconKind.Play;
-            }
+                Application.Current.Resources["playPauseIcon"] = PackIconKind.Play;
+				Application.Current.Resources["playBtnToolTip"] = "Play";
+			}
         }
 
 		private void ChangeMusicTrack(MusicTrack music, bool shouldPlay = false)
@@ -505,6 +508,16 @@ namespace MusicPlayer
             int index = RND.Next(musicTracks.Count);
 			currentSongNumber = index;
 			ChangeMusicTrack(musicTracks[index], true);
+		}
+
+		private void GitHubBtn_Click(object sender, RoutedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://github.com/TheMatiaz0/MusicPlayer");
+		}
+
+		private void MailBtn_Click(object sender, RoutedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("mailto:TheMatiaz0@protonmail.com?subject=Subject&amp;body=Test");
 		}
 	}
 }

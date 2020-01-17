@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncExtension.cs" />
     <Compile Include="FormattedSlider.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="PropertyHandler.cs" />
