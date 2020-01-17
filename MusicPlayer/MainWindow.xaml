@@ -393,6 +393,7 @@
                         <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>
                     </StackPanel>
                 </Button>
+                
                 <Separator Opacity="0" Height="46" />
                 
                 <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click">
@@ -409,6 +410,12 @@
                         <TextBlock Text="Load a playlist"/>
                     </StackPanel>
                 </Button>
+            
+                <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                    <materialDesign:PackIcon/>
+                </Grid>
+
+
             </StackPanel>
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
@@ -447,7 +454,7 @@
                             <materialDesign:PackIcon Kind="ArrowLeft" Width="Auto" Height="Auto" Foreground="Purple"/>
                         </Button>
 
-                        <Button x:Name="BtnPlay" Click="BtnPlay_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1" Width="Auto" BorderBrush="Transparent" Background="Transparent" >
+                        <Button x:Name="BtnPlay" Click="BtnPlay_Click" MinWidth="40" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Width="Auto" BorderBrush="Transparent" Background="Transparent" >
                             <materialDesign:PackIcon Kind="{DynamicResource key1}"  Height="Auto" Width="Auto" Foreground="Purple" />
                         </Button>
 
@@ -464,11 +471,17 @@
                         </Grid.ColumnDefinitions>
 
                         <Button x:Name="BtnLoop" Click="BtnLoop_Click" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="0" Width="Auto" Background="Transparent" BorderBrush="Transparent">
-                            <materialDesign:PackIcon Kind="Loop" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
+                            <StackPanel>
+                                <materialDesign:PackIcon Kind="Loop" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
+                                <materialDesign:PackIcon x:Name="loopEnableDot" Kind="Circle" VerticalAlignment="Center" HorizontalAlignment="Center" Width="7" Height="7" Foreground="Purple" Visibility="Collapsed"/>
+                            </StackPanel>
                         </Button>
 
                         <Button x:Name="BtnRandom" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="1" Width="Auto" Background="Transparent" BorderBrush="Transparent" Click="BtnRandom_Click">
-                            <materialDesign:PackIcon Kind="DieMultiple" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
+                            <StackPanel>
+                                <materialDesign:PackIcon Kind="DieMultiple" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
+                                <materialDesign:PackIcon x:Name="randomEnableDot" Kind="Circle" VerticalAlignment="Center" HorizontalAlignment="Center" Width="7" Height="7" Foreground="Purple" Visibility="Collapsed"/>
+                            </StackPanel>
                         </Button>
 
                     </Grid>

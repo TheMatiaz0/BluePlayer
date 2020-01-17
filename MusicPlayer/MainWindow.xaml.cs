@@ -59,19 +59,19 @@ namespace MusicPlayer
 			}
 
 			ClearPlaylist();
+
+			Application.Current.Resources["key1"] = PackIconKind.Play;
 		}
 
 		private void TryLoop()
 		{
 			if (!isLooped)
 			{
-				// BtnSkip.Foreground = Brushes.Purple;
 				Skip();
 			}
 
 			else
 			{
-				// BtnSkip.Foreground = Brushes.LightPink;
 				PlaySameMusic();
 			}
 		}
@@ -450,6 +450,20 @@ namespace MusicPlayer
 		private void BtnLoop_Click(object sender, RoutedEventArgs e)
 		{
 			isLooped = !isLooped;
+			SetVisibility(loopEnableDot, isLooped);
+		}
+
+		private void SetVisibility(PackIcon packIcon, bool isTrue)
+		{
+			if (isTrue)
+			{
+				packIcon.Visibility = Visibility.Visible;
+			}
+
+			else
+			{
+				packIcon.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -483,12 +497,13 @@ namespace MusicPlayer
 		private void BtnRandom_Click(object sender, RoutedEventArgs e)
 		{
 			isRandomized = !isRandomized;
+			SetVisibility(randomEnableDot, isRandomized);
 		}
 
 		private void PlayRandomTrack ()
 		{
             int index = RND.Next(musicTracks.Count);
-			
+			currentSongNumber = index;
 			ChangeMusicTrack(musicTracks[index], true);
 		}
 	}
