@@ -1,5 +1,7 @@
 # :musical_note: BluePlayer
 
+![Icon of BluePlayer](/BluePlayer/Graphics/BluePlayer256(4).png)
+
 ![GIF presentation](/doc/x2Aj9OOVnv.gif)
 A software created for listening music.
 You can play any audio files with extension: ".mp3", ".wav", ".m4a" by adding them to the playlist, then if you would like to save all music tracks you have picked then you can simply do that by pressing the button.
@@ -8,8 +10,9 @@ BluePlayer has an ability to loop through tracks or randomize your next track.
 
 ![Loop and Randomize button](/doc/BluePlayer_WEoUmJ3xVK.png)
 
-
 **Current Version:** 1.0.0.
+
+***
 
 # Tutorial/How to...
 
