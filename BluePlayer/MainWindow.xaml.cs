@@ -227,10 +227,10 @@ namespace BluePlayer
 
 				foreach (string creatorName in creators)
 				{
-					builder.Append($"{creatorName},");
+					builder.Append($"{creatorName}, ");
 				}
 
-				builder.Remove(builder.Length - 1, 1);
+				builder.Remove(builder.Length - 2, 1);
 				finalCreator = builder.ToString();
 			}
 

@@ -434,7 +434,7 @@
                         <materialDesign:PackIcon  Kind="GithubCircle" Foreground="Black" Width="25" Height="25"/>
                     </Button>
 
-                    <Button x:Name="MailBtn" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Grid.Row="0" Click="MailBtn_Click" ToolTip="Mail to TheMatiaz0@protonmail.com">
+                    <Button x:Name="MailBtn" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Grid.Row="0" Click="MailBtn_Click" ToolTip="E-Mail to TheMatiaz0@protonmail.com">
                         <materialDesign:PackIcon Kind="EmailSend" Foreground="Black" BorderBrush="Red" Width="25" Height="25"/>
                     </Button>
 
