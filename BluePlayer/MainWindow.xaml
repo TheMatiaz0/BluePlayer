@@ -371,8 +371,6 @@
         <DockPanel>
             <Border BorderBrush="White" BorderThickness="0.8 0 2 0" DockPanel.Dock="Left">
                 <Grid DockPanel.Dock="Left" Background="Black">
-
-
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"></ColumnDefinition>
