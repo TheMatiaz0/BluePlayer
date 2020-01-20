@@ -41,7 +41,7 @@ public class SortAdorner : Adorner
         Geometry geometry = ascGeometry;
         if (this.Direction == ListSortDirection.Descending)
             geometry = descGeometry;
-        drawingContext.DrawGeometry(Brushes.Black, null, geometry);
+        drawingContext.DrawGeometry(Brushes.White, null, geometry);
 
         drawingContext.Pop();
     }

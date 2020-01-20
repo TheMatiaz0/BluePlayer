@@ -28,17 +28,11 @@ namespace BluePlayer
 {
 	public partial class MainWindow : Window
 	{
-		public ObservableCollection<MusicTrack> musicTracks = new ObservableCollection<MusicTrack>();
-		private readonly MediaPlayer mediaPlayer = new MediaPlayer();
+		public MainPlayer MusicController { get; } = new MainPlayer();
 
 		public static Random RND = new Random();
 
-		private bool isPlaying;
 		private bool isDraggingSlider;
-		private bool isLooped = false;
-		private bool isRandomized = false;
-
-		private int currentSongNumber = 0;
 
 		private GridViewColumnHeader listViewSortCol = null;
 		private SortAdorner listViewSortAdorner = null;
@@ -48,8 +42,11 @@ namespace BluePlayer
 			InitializeComponent();
 			_ = Update();
 
-			mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
-			mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
+			MusicController.MusicPlayer.MediaOpened += MediaPlayer_MediaOpened;
+			MusicController.OnPlaySwitch += MusicController_OnPlaySwitch;
+			MusicController.OnLoopSwitch += MusicController_OnLoopSwitch;
+			MusicController.OnRandomizeSwitch += MusicController_OnRandomizeSwitch;
+
 
 			ClearPlaylist();
 
@@ -57,30 +54,27 @@ namespace BluePlayer
 			Application.Current.Resources["playBtnToolTip"] = "Play";
 		}
 
-		private void TryLoop()
+		private void MusicController_OnRandomizeSwitch(object sender, SimpleArgs<bool> e)
 		{
-			if (!isLooped)
-			{
-				Skip();
-			}
-
-			else
-			{
-				PlaySameMusic();
-			}
+			SetVisibility(randomEnableDot, e.Value);
 		}
 
-
-		private void MediaPlayer_MediaEnded(object sender, EventArgs e)
+		private void MusicController_OnLoopSwitch(object sender, SimpleArgs<bool> e)
 		{
-			TryLoop();
+			SetVisibility(loopEnableDot, e.Value);
+		}
+
+		private void MusicController_OnPlaySwitch(object sender, SimpleArgs<bool> e)
+		{
+			CheckPlayStatus(e.Value);
 		}
 
 		private void MediaPlayer_MediaOpened(object sender, EventArgs e)
 		{
 			ClipProgress.Minimum = 0;
-			ClipProgress.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+			ClipProgress.Maximum = MusicController.MusicPlayer.NaturalDuration.TimeSpan.TotalSeconds;
 		}
+
 
 		private async Task Update()
 		{
@@ -88,22 +82,20 @@ namespace BluePlayer
 			{
 				await Task.Delay(TimeSpan.FromMilliseconds(500));
 
-
-				if (mediaPlayer.Source != null && mediaPlayer.NaturalDuration.HasTimeSpan)
+				if (MusicController.MusicPlayer.Source != null && MusicController.MusicPlayer.NaturalDuration.HasTimeSpan)
 				{
 					if (isDraggingSlider == false)
 					{
-						ClipProgress.Value = mediaPlayer.Position.TotalSeconds;
+						ClipProgress.Value = MusicController.MusicPlayer.Position.TotalSeconds;
 					}
-					lblStatus.Content = $"{(int)mediaPlayer.Position.TotalMinutes}:{mediaPlayer.Position.Seconds:00}/{(int)mediaPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{mediaPlayer.NaturalDuration.TimeSpan.Seconds:00}";
+					lblStatus.Content = $"{(int)MusicController.MusicPlayer.Position.TotalMinutes}:{MusicController.MusicPlayer.Position.Seconds:00}/{(int)MusicController.MusicPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{MusicController.MusicPlayer.NaturalDuration.TimeSpan.Seconds:00}";
 				}
 			}
 		}
 
 		private void BtnPlay_Click(object sender, RoutedEventArgs e)
 		{
-			mediaPlayer.PlayWithPause(ref isPlaying);
-			CheckPlayStatus(isPlaying);
+			MusicController.SwitchPlayPause();		
 		}
 
 		private void CheckPlayStatus(bool isPlaying)
@@ -117,23 +109,6 @@ namespace BluePlayer
 			{
 				Application.Current.Resources["playPauseIcon"] = PackIconKind.Play;
 				Application.Current.Resources["playBtnToolTip"] = "Play";
-			}
-		}
-
-		private void ChangeMusicTrack(MusicTrack music, bool shouldPlay = false)
-		{
-			if (music == null)
-			{
-				return;
-			}
-
-			mediaPlayer.Open(new Uri(music.Path));
-
-			if (shouldPlay)
-			{
-				mediaPlayer.Play();
-				isPlaying = true;
-				CheckPlayStatus(true);
 			}
 		}
 
@@ -184,7 +159,7 @@ namespace BluePlayer
 
 				try
 				{
-					ChangeMusicTrack(musicTracks[currentSongNumber]);
+					MusicController.PlaySameMusic(false);
 				}
 
 				catch (Exception f)
@@ -194,7 +169,6 @@ namespace BluePlayer
 			}
 
 		}
-
 		public void AddFile(string path)
 		{
 			if (!File.Exists(path))
@@ -202,11 +176,10 @@ namespace BluePlayer
 				return;
 			}
 
-			if (musicTracks.Any(item => item.Path == path) == true)
+			if (MusicController.MusicTracks.Any(item => item.Path == path) == true)
 			{
 				return;
 			}
-
 
 			ShellObject shellFile = ShellObject.FromParsingName(path);
 			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
@@ -240,75 +213,24 @@ namespace BluePlayer
 			}
 
 
-			musicTracks.Add(new MusicTrack(musicTracks.Count, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
-		}
-
-		private void PlaySameMusic()
-		{
-			ChangeMusicTrack(musicTracks[currentSongNumber], true);
-		}
-
-		private void Skip()
-		{
-			if (musicTracks.Count <= 0)
-			{
-				return;
-			}
-
-			if (isRandomized)
-			{
-				PlayRandomTrack();
-				return;
-			}
-
-			currentSongNumber += 1;
-
-			if (currentSongNumber > musicTracks.Count - 1)
-			{
-				currentSongNumber = 0;
-			}
-
-			ChangeMusicTrack(musicTracks[currentSongNumber], true);
-		}
-
-		private void Back()
-		{
-			if (musicTracks.Count <= 0)
-			{
-				return;
-			}
-
-			if (isRandomized)
-			{
-				PlayRandomTrack();
-				return;
-			}
-
-			currentSongNumber -= 1;
-
-			if (currentSongNumber < 0)
-			{
-				currentSongNumber = musicTracks.Count - 1;
-			}
-			ChangeMusicTrack(musicTracks[currentSongNumber], true);
+			MusicController.MusicTracks.Add(new MusicTrack(MusicController.MusicTracks.Count, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
 		}
 
 		private void BtnSkip_Click(object sender, RoutedEventArgs e)
 		{
-			Skip();
+			MusicController.Skip();
 		}
 
 		private void BtnBack_Click(object sender, RoutedEventArgs e)
 		{
-			Back();
+			MusicController.Back();
 		}
 
 		private void AllMusicTracks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			if (((FrameworkElement)e.OriginalSource).DataContext is MusicTrack item)
 			{
-				currentSongNumber = item.ID;
-				ChangeMusicTrack(item, true);
+				MusicController.PlaySelectedMusicTrack(item);
 			}
 		}
 
@@ -365,7 +287,7 @@ namespace BluePlayer
 		private void ClipProgress_DragCompleted(object sender, DragCompletedEventArgs e)
 		{
 			isDraggingSlider = false;
-			mediaPlayer.Position = TimeSpan.FromSeconds(ClipProgress.Value);
+			MusicController.MusicPlayer.Position = TimeSpan.FromSeconds(ClipProgress.Value);
 		}
 
 		private void ClipProgress_DragStarted(object sender, DragStartedEventArgs e)
@@ -380,7 +302,7 @@ namespace BluePlayer
 				musicTracks = new List<MusicTrack>()
 			};
 
-			foreach (MusicTrack item in musicTracks)
+			foreach (MusicTrack item in MusicController.MusicTracks)
 			{
 				playlist.musicTracks.Add(new MusicTrack(item.ID, item.Artist, item.SongName, item.Path, item.Extension));
 			}
@@ -443,13 +365,12 @@ namespace BluePlayer
 
 		private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			mediaPlayer.Volume = e.NewValue;
+			MusicController.MusicPlayer.Volume = e.NewValue;
 		}
 
 		private void BtnLoop_Click(object sender, RoutedEventArgs e)
 		{
-			isLooped = !isLooped;
-			SetVisibility(loopEnableDot, isLooped);
+			MusicController.ChangeLoop();
 		}
 
 		private void SetVisibility(PackIcon packIcon, bool isTrue)
@@ -467,48 +388,37 @@ namespace BluePlayer
 
 		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
 		{
-			mediaPlayer.Stop();
-			mediaPlayer.Open(null);
+			MusicController.MusicPlayer.Stop();
+			MusicController.MusicPlayer.Open(null);
 			if (AllMusicTracks.SelectedIndex == -1)
 			{
 				return;
 			}
-			RemoveMusicTrack(AllMusicTracks.SelectedIndex);
-		}
-
-		private void RemoveMusicTrack(int index)
-		{
-			musicTracks.RemoveAt(index);
+			MusicController.MusicTracks.RemoveAt(AllMusicTracks.SelectedIndex);
 		}
 
 		private void ClearPlaylistMenuBtn_Click(object sender, RoutedEventArgs e)
 		{
-			mediaPlayer.Stop();
-			mediaPlayer.Open(null);
+			MusicController.MusicPlayer.Stop();
+			MusicController.MusicPlayer.Open(null);
 			ClearPlaylist();
 		}
 
 		private void ClearPlaylist()
 		{
-			musicTracks = new ObservableCollection<MusicTrack>();
+			MusicController.MusicTracks = new ObservableCollection<MusicTrack>();
 
-			AllMusicTracks.ItemsSource = musicTracks;
+			AllMusicTracks.ItemsSource = MusicController.MusicTracks;
 
 			DataContext = this;
 		}
 
 		private void BtnRandom_Click(object sender, RoutedEventArgs e)
 		{
-			isRandomized = !isRandomized;
-			SetVisibility(randomEnableDot, isRandomized);
+			MusicController.ChangeRandomization();
 		}
 
-		private void PlayRandomTrack()
-		{
-			int index = RND.Next(musicTracks.Count);
-			currentSongNumber = index;
-			ChangeMusicTrack(musicTracks[index], true);
-		}
+
 
 		private void GitHubBtn_Click(object sender, RoutedEventArgs e)
 		{

@@ -7,18 +7,18 @@ using System.Windows.Media;
 
 public static class MediaPlayerExtension
 {
-    public static void PlayWithPause(this MediaPlayer mediaPlayer, ref bool isPlaying)
+    public static bool PlayWithPause(this MediaPlayer mediaPlayer, bool isPlaying)
     {
         if (!isPlaying)
         {
             mediaPlayer.Play();
-            isPlaying = true;
+            return true;
         }
 
         else
         {
             mediaPlayer.Pause();
-            isPlaying = false;
+            return false;
         }
 
     }

@@ -17,6 +17,11 @@ namespace BluePlayer
 			_ = WaitForApplicationLaunchFully(e.Args);
 		}
 
+		/// <summary>
+		/// Gather files from args if application is loaded fully (that means Current.MainWindow isn't null).
+		/// </summary>
+		/// <param name="args"></param>
+		/// <returns></returns>
 		private async Task WaitForApplicationLaunchFully(string[] args)
 		{
 			await AsyncExtension.WaitUntil(() => Current.MainWindow == null);

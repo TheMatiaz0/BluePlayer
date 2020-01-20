@@ -8,10 +8,10 @@
         mc:Ignorable="d"
         Title="BluePlayer" Height="500" Width="900"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="White"
+        Background="#080820"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Icon="../Graphics/BluePlayer256(4).png">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Icon="../Graphics/BluePlayer256(4).png" Foreground="#DDFFFFFF">
     <Window.Resources>
         <Style x:Key="FormattedSliderStyle1" TargetType="{x:Type local:FormattedSlider}">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
@@ -362,93 +362,96 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Foreground" Value="#200020"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
         <DockPanel>
-            <Grid DockPanel.Dock="Left" Opacity="25" Background="#66000000">
+            <Border BorderBrush="White" BorderThickness="0.8 0 2 0" DockPanel.Dock="Left">
+                <Grid DockPanel.Dock="Left" Background="Black">
 
-                
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
 
-                    <TextBox x:Name="PathInput" Height="Auto" TextWrapping="Wrap" FontSize="10" Text="Path " Foreground="White" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="111" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True"/>
-                    <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="60" Background="DarkSlateBlue" BorderBrush="Transparent" ToolTip="Get path to your folder with songs">
-                        <StackPanel Orientation="Horizontal" Width="70">
-                            <TextBlock Text="Get" FontSize="10"/>
-                            <Separator Width="2" Opacity="0"/>
-                            <materialDesign:PackIcon Kind="Folder" Width="10" VerticalAlignment="Center" Height="10" Foreground="Yellow"/>
-                        </StackPanel>
-                    </Button>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-                    <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="Add files from folder to playlist">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Add" FontSize="16" />
-                            <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>
-                        </StackPanel>
-                    </Button>
+                        <TextBox x:Name="PathInput" Height="Auto" TextWrapping="Wrap" FontSize="10" Text="Path " Foreground="White" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="111" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True" Margin="0,5"/>
+                        <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="60" Background="DarkSlateBlue" BorderBrush="Transparent" ToolTip="Get path to your folder with songs">
+                            <StackPanel Orientation="Horizontal" Width="70">
+                                <TextBlock Text="Get" FontSize="10"/>
+                                <Separator Width="2" Opacity="0"/>
+                                <materialDesign:PackIcon Kind="Folder" Width="10" VerticalAlignment="Center" Height="10" Foreground="Yellow"/>
+                            </StackPanel>
+                        </Button>
 
+                        <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="Add files from folder to playlist" Height="25">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Add" FontSize="16" />
+                                <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>
+                            </StackPanel>
+                        </Button>
+
+                    </Grid>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Create"/>
+                                <TextBlock Text="Create a playlist"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="LoadBtn" Background="DarkSlateBlue" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" BorderBrush="Transparent" Click="LoadBtn_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileDownload"/>
+                                <TextBlock Text="Load a playlist"/>
+                            </StackPanel>
+                        </Button>
+
+                    </Grid>
+
+                    <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="0" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
+                            <materialDesign:PackIcon  Kind="GithubCircle" Foreground="White" Width="25" Height="25"/>
+                        </Button>
+
+                        <Button x:Name="MailBtn" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Grid.Row="0" Click="MailBtn_Click" ToolTip="E-Mail to TheMatiaz0@protonmail.com">
+                            <materialDesign:PackIcon Kind="EmailSend" Foreground="White" BorderBrush="Red" Width="25" Height="25"/>
+                        </Button>
+
+                        <Separator Height="50" Opacity="0"/>
+                        <TextBlock Text="v. 1.1.0" Grid.Column="0" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+                    </Grid>
                 </Grid>
-
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Create"/>
-                            <TextBlock Text="Create a playlist"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button x:Name="LoadBtn" Background="DarkSlateBlue" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" BorderBrush="Transparent" Click="LoadBtn_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="FileDownload"/>
-                            <TextBlock Text="Load a playlist"/>
-                        </StackPanel>
-                    </Button>
-
-                </Grid>
-
-                <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="0" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
-                        <materialDesign:PackIcon  Kind="GithubCircle" Foreground="Black" Width="25" Height="25"/>
-                    </Button>
-
-                    <Button x:Name="MailBtn" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Grid.Row="0" Click="MailBtn_Click" ToolTip="E-Mail to TheMatiaz0@protonmail.com">
-                        <materialDesign:PackIcon Kind="EmailSend" Foreground="Black" BorderBrush="Red" Width="25" Height="25"/>
-                    </Button>
-
-
-                    <Separator Height="40" Opacity="0" Grid.ColumnSpan="2"/>
-                    <TextBlock Text="v. 1.0.0" Grid.Column="0" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
-                </Grid>
-
-            </Grid>
-
-            <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Gray">
-                <local:FormattedSlider x:Name="ClipProgress" Foreground="Purple" Thumb.DragStarted="ClipProgress_DragStarted" Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" AutoToolTipPlacement="BottomRight" Style="{DynamicResource FormattedSliderStyle1}" IsMoveToPointEnabled="True" IsSnapToTickEnabled="True">
+            </Border>
+            <Border BorderBrush="White" BorderThickness="1" DockPanel.Dock="Bottom" Background="Black">
+            <StackPanel DockPanel.Dock="Bottom" Margin="10" Background="Black">
+                <Separator Width="25"/>
+                <local:FormattedSlider x:Name="ClipProgress" Foreground="#00367f" Thumb.DragStarted="ClipProgress_DragStarted" Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" AutoToolTipPlacement="BottomRight" Style="{DynamicResource FormattedSliderStyle1}" IsMoveToPointEnabled="True" IsSnapToTickEnabled="True" Margin="5,0">
                 </local:FormattedSlider>
-                <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="White"/>
+                <Label FontWeight="Light" Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="#200020" Foreground="White"/>
 
 
                 <Grid>
@@ -465,7 +468,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Separator Width="5" Grid.Column="0" Opacity="0" />
-                        <Slider Grid.Column="1" x:Name="VolumeSlider" AutoToolTipPrecision="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="Purple" MinWidth="110" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5"/>
+                        <Slider Grid.Column="1" x:Name="VolumeSlider" AutoToolTipPrecision="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="#00367f" MinWidth="110" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" SmallChange="0.01" LargeChange="0.1" Value="0.5" BorderBrush="Red"/>
 
                     </Grid>
 
@@ -478,15 +481,15 @@
                         </Grid.ColumnDefinitions>
 
                         <Button x:Name="BtnBack" Click="BtnBack_Click" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Width="Auto" BorderBrush="Transparent" Background="Transparent" ToolTip="Previous">
-                            <materialDesign:PackIcon Kind="ArrowLeft" Width="Auto" Height="Auto" Foreground="Purple" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="ArrowLeft" Width="Auto" Height="Auto" Foreground="#00367f" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
 
                         <Button x:Name="BtnPlay" Click="BtnPlay_Click" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Width="Auto" BorderBrush="Transparent" Background="Transparent" ToolTip="{DynamicResource playBtnToolTip}">
-                            <materialDesign:PackIcon Kind="{DynamicResource playPauseIcon}"  Height="Auto" Width="Auto" Foreground="Purple" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="{DynamicResource playPauseIcon}"  Height="Auto" Width="Auto" Foreground="#00367f" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
 
                         <Button x:Name="BtnSkip" Click="BtnSkip_Click" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Width="Auto" Background="Transparent" BorderBrush="Transparent" ToolTip="Next">
-                            <materialDesign:PackIcon Kind="ArrowRight" Width="Auto" Height="Auto" Foreground="Purple" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <materialDesign:PackIcon Kind="ArrowRight" Width="Auto" Height="Auto" Foreground="#00367f" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
                     </Grid>
 
@@ -499,14 +502,14 @@
 
                         <Button x:Name="BtnLoop" Click="BtnLoop_Click" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="0" Width="Auto" Background="Transparent" BorderBrush="Transparent" ToolTip="Loop">
                             <StackPanel>
-                                <materialDesign:PackIcon Kind="Loop" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
+                                <materialDesign:PackIcon Kind="Loop" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="#00367f"/>
                                 <materialDesign:PackIcon x:Name="loopEnableDot" Kind="Circle" VerticalAlignment="Center" HorizontalAlignment="Center" Width="7" Height="7" Foreground="Purple" Visibility="Collapsed"/>
                             </StackPanel>
                         </Button>
 
                         <Button x:Name="BtnRandom" VerticalAlignment="Bottom"  MinWidth="40" Height="50" Grid.Column="1" Width="Auto" Background="Transparent" BorderBrush="Transparent" Click="BtnRandom_Click" ToolTip="Randomize">
                             <StackPanel>
-                                <materialDesign:PackIcon Kind="DieMultiple" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="Purple"/>
+                                <materialDesign:PackIcon Kind="DieMultiple" VerticalAlignment="Bottom" Width="30" Height="30" Foreground="#00367f"/>
                                 <materialDesign:PackIcon x:Name="randomEnableDot" Kind="Circle" VerticalAlignment="Center" HorizontalAlignment="Center" Width="7" Height="7" Foreground="Purple" Visibility="Collapsed"/>
                             </StackPanel>
                         </Button>
@@ -514,19 +517,40 @@
                     </Grid>
                 </Grid>
             </StackPanel>
+            </Border>
 
 
-            <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="330" MouseDoubleClick="AllMusicTracks_MouseDoubleClick">
+            <ListView x:Name="AllMusicTracks" AllowDrop="True" Drop="AllMusicTracks_Drop" DockPanel.Dock="Top" Width="Auto" MinWidth="622" MinHeight="310" MouseDoubleClick="AllMusicTracks_MouseDoubleClick" Foreground="White" BorderBrush="White">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="BorderBrush" Value="LightGray" />
+                        <Setter Property="Height" Value="27"/>
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="LightGray"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Background" Value="LightGray"/>
+                            </Trigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
                 <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Delete a music track" Click="MenuItem_Click_1" x:Name="DeleteTrackMenuBtn">
+                    <ContextMenu Background="Black">
+                        <MenuItem Header="Delete a music track" Foreground="White" Click="MenuItem_Click_1" x:Name="DeleteTrackMenuBtn">
                             <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="Delete"/>
+                                <materialDesign:PackIcon Kind="Delete" Foreground="White"/>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Clear a playlist" x:Name="ClearPlaylistMenuBtn" Click="ClearPlaylistMenuBtn_Click">
+                        <MenuItem Header="Clear a playlist" Foreground="White" x:Name="ClearPlaylistMenuBtn" Click="ClearPlaylistMenuBtn_Click">
                             <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="Autorenew"/>
+                                <materialDesign:PackIcon Kind="Autorenew" Foreground="White"/>
                             </MenuItem.Icon>
                         </MenuItem>
 
@@ -536,17 +560,17 @@
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding ID}" Width="45">
                             <GridViewColumn.Header>
-                                <GridViewColumnHeader Tag="ID" Click="AllMusicTracksColumn_Click">ID</GridViewColumnHeader>
+                                <GridViewColumnHeader Foreground="White" Tag="ID" Click="AllMusicTracksColumn_Click">ID</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding SongName}" Width="385">
                             <GridViewColumn.Header>
-                                <GridViewColumnHeader Tag="SongName" Click="AllMusicTracksColumn_Click">Song</GridViewColumnHeader>
+                                <GridViewColumnHeader Foreground="White" Tag="SongName" Click="AllMusicTracksColumn_Click">Song</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
-                        <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="290">
+                        <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="270">
                             <GridViewColumn.Header>
-                                <GridViewColumnHeader Tag="Artist" Click="AllMusicTracksColumn_Click">Artist</GridViewColumnHeader>
+                                <GridViewColumnHeader Foreground="White" Tag="Artist" Click="AllMusicTracksColumn_Click">Artist</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
                     </GridView>
