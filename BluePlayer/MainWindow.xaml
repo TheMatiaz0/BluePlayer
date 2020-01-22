@@ -11,7 +11,14 @@
         Background="#080820"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Icon="../Graphics/BluePlayer256(4).png" Foreground="#DDFFFFFF">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Foreground="#DDFFFFFF">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo>
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfo x:Name="ThumbnailPlayBtn" ImageSource="/Graphics/BluePlayerLogo3.png" Description="Play" Click="ThumbnailPlayBtn_Click"/>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
     <Window.Resources>
         <Style x:Key="FormattedSliderStyle1" TargetType="{x:Type local:FormattedSlider}">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>

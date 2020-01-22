@@ -45,8 +45,7 @@ namespace BluePlayer
 			MusicController.MusicPlayer.MediaOpened += MediaPlayer_MediaOpened;
 			MusicController.OnPlaySwitch += MusicController_OnPlaySwitch;
 			MusicController.OnLoopSwitch += MusicController_OnLoopSwitch;
-			MusicController.OnRandomizeSwitch += MusicController_OnRandomizeSwitch;
-
+			MusicController.OnRandomizeSwitch += MusicController_OnRandomizeSwitch;	
 
 			ClearPlaylist();
 
@@ -80,7 +79,9 @@ namespace BluePlayer
 		{
 			while (true)
 			{
+
 				await Task.Delay(TimeSpan.FromMilliseconds(500));
+
 
 				if (MusicController.MusicPlayer.Source != null && MusicController.MusicPlayer.NaturalDuration.HasTimeSpan)
 				{
@@ -131,10 +132,10 @@ namespace BluePlayer
 
 		private void OkBtn_Click(object sender, RoutedEventArgs e)
 		{
-			FindAndAddFiles(PathInput.Text);
+			_ = FindAndAddFiles(PathInput.Text);
 		}
 
-		public void FindAndAddFiles(string input)
+		public async Task FindAndAddFiles(string input)
 		{
 			string[] foundSoundFiles = null;
 
@@ -150,10 +151,11 @@ namespace BluePlayer
 
 			if (foundSoundFiles != null)
 			{
-				ClearPlaylist();
+				// ClearPlaylist();
 
 				foreach (string path in foundSoundFiles)
 				{
+					await Task.Delay(50);
 					AddFile(path);
 				}
 
@@ -239,11 +241,16 @@ namespace BluePlayer
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
 				string[] foundSoundFiles = CheckSoundFiles((string[])e.Data.GetData(DataFormats.FileDrop));
-
+				string[] playlistFiles = CheckPlaylist((string[])e.Data.GetData(DataFormats.FileDrop));
 
 				foreach (string path in foundSoundFiles)
 				{
 					AddFile(path);
+				}
+
+				foreach (string path in playlistFiles)
+				{
+					LoadPlaylist(path);
 				}
 			}
 		}
@@ -253,6 +260,14 @@ namespace BluePlayer
 			return (from item in paths
 					let ext = System.IO.Path.GetExtension(item)
 					where ext == ".mp3" || ext == ".wav" || ext == ".m4a"
+					select item).ToArray();
+		}
+
+		public string[] CheckPlaylist(string[] paths)
+		{
+			return (from item in paths
+					let ext = System.IO.Path.GetExtension(item)
+					where ext == ".playlist"
 					select item).ToArray();
 		}
 
@@ -327,8 +342,13 @@ namespace BluePlayer
 			}
 		}
 
-		private void LoadPlaylist(string path)
+		public void LoadPlaylist(string path)
 		{
+			if (!File.Exists(path))
+			{
+				return;
+			}
+
 			StreamReader stream = new StreamReader(path);
 
 			Playlist playlist = (Playlist)SerializationXML.LoadFile<Playlist>(stream);
@@ -428,6 +448,11 @@ namespace BluePlayer
 		private void MailBtn_Click(object sender, RoutedEventArgs e)
 		{
 			System.Diagnostics.Process.Start("mailto:TheMatiaz0@protonmail.com?subject=Subject&amp;body=Test");
+		}
+
+		private void ThumbnailPlayBtn_Click(object sender, EventArgs e)
+		{
+			MusicController.SwitchPlayPause();
 		}
 	}
 }

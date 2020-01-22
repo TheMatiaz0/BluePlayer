@@ -27,11 +27,22 @@ namespace BluePlayer
 			await AsyncExtension.WaitUntil(() => Current.MainWindow == null);
 
 			string[] foundSoundFiles = ((MainWindow)Current.MainWindow).CheckSoundFiles(args);
+			string[] playlistFiles = ((MainWindow)Current.MainWindow).CheckPlaylist(args);
 
 			foreach (string path in foundSoundFiles)
 			{
 				((MainWindow)Current.MainWindow).AddFile(path);
 			}
+
+			foreach (string path in playlistFiles)
+			{
+				((MainWindow)Current.MainWindow).LoadPlaylist(path);
+			}
+		}
+
+		private void Application_Exit(object sender, ExitEventArgs e)
+		{
+
 		}
 	}
 }
