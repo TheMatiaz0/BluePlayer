@@ -11,7 +11,7 @@
         Background="#080820"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Foreground="#DDFFFFFF">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Foreground="#DDFFFFFF" Closed="Window_Closed">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -437,6 +437,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+
 
                         <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="0" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
                             <materialDesign:PackIcon  Kind="GithubCircle" Foreground="White" Width="25" Height="25"/>

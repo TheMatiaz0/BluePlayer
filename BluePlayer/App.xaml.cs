@@ -39,10 +39,5 @@ namespace BluePlayer
 				((MainWindow)Current.MainWindow).LoadPlaylist(path);
 			}
 		}
-
-		private void Application_Exit(object sender, ExitEventArgs e)
-		{
-
-		}
 	}
 }

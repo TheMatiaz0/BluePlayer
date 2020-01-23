@@ -115,6 +115,7 @@
     <Compile Include="Playlist.cs" />
     <Compile Include="PropertyHandler.cs" />
     <Compile Include="SerializationXML.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SimpleArgs.cs" />
     <Compile Include="SortAdorner.cs" />
     <Page Include="MainWindow.xaml">

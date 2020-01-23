@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,9 @@ namespace BluePlayer
 {
 	public partial class MainWindow : Window
 	{
+		public string PathToSettings => $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Settings.cfg";
+
+
 		public MainPlayer MusicController { get; } = new MainPlayer();
 
 		public static Random RND = new Random();
@@ -45,7 +49,14 @@ namespace BluePlayer
 			MusicController.MusicPlayer.MediaOpened += MediaPlayer_MediaOpened;
 			MusicController.OnPlaySwitch += MusicController_OnPlaySwitch;
 			MusicController.OnLoopSwitch += MusicController_OnLoopSwitch;
-			MusicController.OnRandomizeSwitch += MusicController_OnRandomizeSwitch;	
+			MusicController.OnRandomizeSwitch += MusicController_OnRandomizeSwitch;
+
+			if (File.Exists(PathToSettings))
+			{
+				Settings settings = (Settings)SerializationXML.LoadFile<Settings>(PathToSettings);
+				MusicController.SetupForLoad(settings, VolumeSlider);
+			}
+
 
 			ClearPlaylist();
 
@@ -151,8 +162,6 @@ namespace BluePlayer
 
 			if (foundSoundFiles != null)
 			{
-				// ClearPlaylist();
-
 				foreach (string path in foundSoundFiles)
 				{
 					await Task.Delay(50);
@@ -186,6 +195,8 @@ namespace BluePlayer
 			ShellObject shellFile = ShellObject.FromParsingName(path);
 			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
 			string songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
+			// Bitmap img = PropertyHandler.GetBitmap(shellFile.Properties.GetProperty(SystemProperties.System.Thumbnail));
+			// PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.))
 
 			if (string.IsNullOrEmpty(songName))
 			{
@@ -243,15 +254,21 @@ namespace BluePlayer
 				string[] foundSoundFiles = CheckSoundFiles((string[])e.Data.GetData(DataFormats.FileDrop));
 				string[] playlistFiles = CheckPlaylist((string[])e.Data.GetData(DataFormats.FileDrop));
 
-				foreach (string path in foundSoundFiles)
-				{
-					AddFile(path);
-				}
+				_ = AddFiles(foundSoundFiles);
 
 				foreach (string path in playlistFiles)
 				{
 					LoadPlaylist(path);
 				}
+			}
+		}
+
+		private async Task AddFiles (string[] paths)
+		{
+			foreach (string path in paths)
+			{
+				await Task.Delay(50);
+				AddFile(path);
 			}
 		}
 
@@ -322,7 +339,7 @@ namespace BluePlayer
 				playlist.musicTracks.Add(new MusicTrack(item.ID, item.Artist, item.SongName, item.Path, item.Extension));
 			}
 
-			SerializationXML.SaveFile<Playlist>(path, playlist);
+			SerializationXML.SaveFile(path, playlist);
 		}
 
 		private void SaveBtn_Click(object sender, RoutedEventArgs e)
@@ -349,10 +366,7 @@ namespace BluePlayer
 				return;
 			}
 
-			StreamReader stream = new StreamReader(path);
-
-			Playlist playlist = (Playlist)SerializationXML.LoadFile<Playlist>(stream);
-			stream.Close();
+			Playlist playlist = (Playlist)SerializationXML.LoadFile<Playlist>(path);
 
 			foreach (MusicTrack item in playlist.musicTracks)
 			{
@@ -365,7 +379,7 @@ namespace BluePlayer
 			CommonOpenFileDialog loadFileDialog = new CommonOpenFileDialog
 			{
 				Multiselect = true,
-				DefaultFileName = "BluePlayer_Playlist"
+				DefaultFileName = "BluePlayer_Playlist.playlist"
 			};
 			CommonFileDialogFilter filter = new CommonFileDialogFilter("Playlist files", "*.playlist");
 			loadFileDialog.Filters.Add(filter);
@@ -453,6 +467,11 @@ namespace BluePlayer
 		private void ThumbnailPlayBtn_Click(object sender, EventArgs e)
 		{
 			MusicController.SwitchPlayPause();
+		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			SerializationXML.SaveFile(PathToSettings, new Settings(MusicController));
 		}
 	}
 }

@@ -23,6 +23,16 @@ namespace BluePlayer
 		public event EventHandler<SimpleArgs<bool>> OnLoopSwitch = delegate { };
 		public event EventHandler<SimpleArgs<bool>> OnRandomizeSwitch = delegate { };
 
+		public void SetupForLoad (Settings settings, System.Windows.Controls.Slider slider)
+		{
+			MusicPlayer.Volume = settings.Volume;
+			slider.Value = MusicPlayer.Volume;
+			IsLooped = settings.IsLooped;
+			IsRandomized = settings.IsRandomized;
+			OnLoopSwitch.Invoke(this, IsLooped);
+			OnRandomizeSwitch.Invoke(this, IsRandomized);
+		}
+
 		public void ChangeLoop ()
 		{
 			IsLooped = !IsLooped;
