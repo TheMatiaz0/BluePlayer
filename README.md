@@ -1,6 +1,6 @@
 # :musical_note: BluePlayer
 
-![Icon of BluePlayer](/BluePlayer/Graphics/BluePlayer256(4).png)
+![Icon of BluePlayer](/BluePlayer/Graphics/BluePlayerLogo3.png)
 
 ![GIF presentation](/doc/x2Aj9OOVnv.gif)
 A software created for listening to music.
