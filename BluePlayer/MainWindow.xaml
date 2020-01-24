@@ -410,6 +410,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
 
                         <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
@@ -434,21 +435,30 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="130"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
+                        <Border BorderBrush="White" BorderThickness="2" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="165">
+                            <Image x:Name="AlbumArtImg"/>
+                        </Border>
 
-                        <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="0" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
+                        <TextBlock Text="Hello world!" Grid.Row="1" HorizontalAlignment="Center"/>
+
+
+                        <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="3" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
                             <materialDesign:PackIcon  Kind="GithubCircle" Foreground="White" Width="25" Height="25"/>
                         </Button>
 
-                        <Button x:Name="MailBtn" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Grid.Row="0" Click="MailBtn_Click" ToolTip="E-Mail to TheMatiaz0@protonmail.com">
+                        <Button x:Name="MailBtn" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Grid.Row="3" Click="MailBtn_Click" ToolTip="E-Mail to TheMatiaz0@protonmail.com">
                             <materialDesign:PackIcon Kind="EmailSend" Foreground="White" BorderBrush="Red" Width="25" Height="25"/>
                         </Button>
 
                         <Separator Height="50" Opacity="0"/>
-                        <TextBlock Text="v. 1.1.0" Grid.Column="0" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+                        <TextBlock Text="v. 1.1.0" Grid.Column="0" Grid.Row="4" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
                     </Grid>
                 </Grid>
             </Border>

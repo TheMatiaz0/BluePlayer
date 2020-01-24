@@ -180,6 +180,7 @@ namespace BluePlayer
 			}
 
 		}
+
 		public void AddFile(string path)
 		{
 			if (!File.Exists(path))
@@ -195,8 +196,11 @@ namespace BluePlayer
 			ShellObject shellFile = ShellObject.FromParsingName(path);
 			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
 			string songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
-			// Bitmap img = PropertyHandler.GetBitmap(shellFile.Properties.GetProperty(SystemProperties.System.Thumbnail));
-			// PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.))
+
+			// experimental:
+			Bitmap shellThumb = shellFile.Thumbnail.LargeBitmap;
+			AlbumArtImg.Source = shellThumb.BitmapToImageSource();
+
 
 			if (string.IsNullOrEmpty(songName))
 			{
