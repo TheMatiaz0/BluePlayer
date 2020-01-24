@@ -111,6 +111,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AsyncExtension.cs" />
+    <Compile Include="BitmapExtension.cs" />
     <Compile Include="FormattedSlider.cs" />
     <Compile Include="MainPlayer.cs" />
     <Compile Include="Playlist.cs" />
