@@ -31,6 +31,8 @@ namespace BluePlayer
 	{
 		public string PathToSettings => $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Settings.cfg";
 
+		public static System.Windows.Controls.Image albumArtPlace;
+		public static TextBlock currentSongPlaying;
 
 		public MainPlayer MusicController { get; } = new MainPlayer();
 
@@ -45,6 +47,9 @@ namespace BluePlayer
 		{
 			InitializeComponent();
 			_ = Update();
+
+			albumArtPlace = AlbumArtImg;
+			currentSongPlaying = PlayingSongName;
 
 			MusicController.MusicPlayer.MediaOpened += MediaPlayer_MediaOpened;
 			MusicController.OnPlaySwitch += MusicController_OnPlaySwitch;
@@ -196,10 +201,12 @@ namespace BluePlayer
 			ShellObject shellFile = ShellObject.FromParsingName(path);
 			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
 			string songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
+			string albumName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Music.AlbumTitle));
+			uint albumNumber = PropertyHandler.GetNumber(shellFile.Properties.GetProperty(SystemProperties.System.Music.TrackNumber));
+			TimeSpan songDuration = PropertyHandler.GetDuration(shellFile.Properties.GetProperty(SystemProperties.System.Media.Duration));
 
-			// experimental:
-			Bitmap shellThumb = shellFile.Thumbnail.LargeBitmap;
-			AlbumArtImg.Source = shellThumb.BitmapToImageSource();
+			Bitmap thumbnailFromShell = shellFile.Thumbnail.LargeBitmap;
+			ImageSource albumArt = thumbnailFromShell.BitmapToImageSource();
 
 
 			if (string.IsNullOrEmpty(songName))
@@ -230,7 +237,7 @@ namespace BluePlayer
 			}
 
 
-			MusicController.MusicTracks.Add(new MusicTrack(MusicController.MusicTracks.Count, finalCreator, songName, path, System.IO.Path.GetExtension(path)));
+			MusicController.MusicTracks.Add(new MusicTrack(MusicController.MusicTracks.Count, finalCreator, songName, path, albumName, albumArt, System.IO.Path.GetExtension(path)));
 		}
 
 		private void BtnSkip_Click(object sender, RoutedEventArgs e)
@@ -340,7 +347,7 @@ namespace BluePlayer
 
 			foreach (MusicTrack item in MusicController.MusicTracks)
 			{
-				playlist.musicTracks.Add(new MusicTrack(item.ID, item.Artist, item.SongName, item.Path, item.Extension));
+				playlist.musicTracks.Add(new MusicTrack(item.ID, item.Artist, item.SongName, item.Path, item.AlbumTitle, item.AlbumArt, item.Extension));
 			}
 
 			SerializationXML.SaveFile(path, playlist);

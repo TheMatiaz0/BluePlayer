@@ -10,6 +10,22 @@ using System.Windows.Media.Imaging;
 
 public class PropertyHandler
 {
+	public static TimeSpan GetDuration(IShellProperty value)
+	{
+		ulong ticks = (ulong)value.ValueAsObject;
+		return TimeSpan.FromTicks((long)ticks);
+	}
+
+	public static uint GetNumber (IShellProperty value)
+	{
+		if (value == null || value.ValueAsObject == null)
+		{
+			return 0;
+		}
+
+		return (uint)value.ValueAsObject;
+	}
+
 	public static string GetValue(IShellProperty value)
 	{
 		if (value == null || value.ValueAsObject == null)

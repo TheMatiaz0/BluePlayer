@@ -11,7 +11,7 @@
         Background="#080820"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="25"
-        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="350" Foreground="#DDFFFFFF" Closed="Window_Closed">
+        FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="830" MinHeight="450" Foreground="#DDFFFFFF" Closed="Window_Closed">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -446,7 +446,7 @@
                             <Image x:Name="AlbumArtImg"/>
                         </Border>
 
-                        <TextBlock Text="Hello world!" Grid.Row="1" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="PlayingSongName" FontSize="16" FontWeight="Light" Text="Hello World!" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
 
 
                         <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="3" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">

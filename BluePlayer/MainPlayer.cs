@@ -149,6 +149,8 @@ namespace BluePlayer
 			}
 
 			MusicPlayer.Open(new Uri(music.Path));
+			MainWindow.albumArtPlace.Source = music.AlbumArt;
+			MainWindow.currentSongPlaying.Text = music.AlbumTitle;
 
 			if (shouldPlay)
 			{
