@@ -10,22 +10,6 @@ using System.Windows.Media.Imaging;
 
 public class PropertyHandler
 {
-	public static Icon GetIcon(IShellProperty value)
-	{
-		return (Icon)value.ValueAsObject;
-	}
-
-
-	public static IconReference GetIconReference (IShellProperty value)
-	{
-		return (IconReference)value.ValueAsObject;
-	}
-
-	public static Bitmap GetBitmap (IShellProperty value)
-	{
-		return (Bitmap)value.ValueAsObject;
-	}
-
 	public static string GetValue(IShellProperty value)
 	{
 		if (value == null || value.ValueAsObject == null)
