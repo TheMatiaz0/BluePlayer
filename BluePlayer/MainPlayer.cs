@@ -25,6 +25,11 @@ namespace BluePlayer
 
 		public MusicTrack GetCurrentSong ()
 		{
+			if (MusicTracks.Count <= 0)
+			{
+				return null;
+			}
+
 			return MusicTracks[CurrentSongNumber];
 		}
 

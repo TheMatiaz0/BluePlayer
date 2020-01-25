@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +19,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -29,6 +31,82 @@ namespace BluePlayer
 {
 	public partial class MainWindow : Window
 	{
+
+		#region Global Hotkey for Media keys
+
+		[DllImport("user32.dll")]
+		private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+		[DllImport("user32.dll")]
+		private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+		private const int HOTKEY_ID = 9000;
+
+		private const uint MOD_NONE = 0x0000;
+		private const uint VK_MEDIA_PLAY_PAUSE = 0xB3;
+		private const uint VK_MEDIA_NEXT_TRACK = 0xB0;
+		private const uint VK_MEDIA_PREV_TRACK = 0xB1;
+
+		private IntPtr _windowHandle;
+		private HwndSource _source;
+
+		protected override void OnSourceInitialized(EventArgs e)
+		{
+			base.OnSourceInitialized(e);
+
+			_windowHandle = new WindowInteropHelper(this).Handle;
+			_source = HwndSource.FromHwnd(_windowHandle);
+			_source.AddHook(HwndHook);
+
+			RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, VK_MEDIA_PLAY_PAUSE);
+			RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, VK_MEDIA_NEXT_TRACK);
+			RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, VK_MEDIA_PREV_TRACK);
+		}
+
+		private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			const int WM_HOTKEY = 0x0312;
+			switch (msg)
+			{
+				case WM_HOTKEY:
+					switch (wParam.ToInt32())
+					{
+						case HOTKEY_ID:
+							int vkey = (((int)lParam >> 16) & 0xFFFF);
+
+							switch ((uint)vkey)
+							{
+								case VK_MEDIA_PLAY_PAUSE:
+									MusicController.SwitchPlayPause();
+									break;
+
+								case VK_MEDIA_NEXT_TRACK:
+									MusicController.Skip();
+									break;
+
+								case VK_MEDIA_PREV_TRACK:
+									MusicController.Back();
+									break;
+							}
+
+							handled = true;
+							break;
+					}
+					break;
+			}
+			return IntPtr.Zero;
+		}
+
+		protected override void OnClosed(EventArgs e)
+		{
+			_source.RemoveHook(HwndHook);
+			UnregisterHotKey(_windowHandle, HOTKEY_ID);
+			base.OnClosed(e);
+		}
+
+		#endregion
+
+
 		public string PathToSettings => $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Settings.cfg";
 
 		public static System.Windows.Controls.Image albumArtPlace;
@@ -62,11 +140,8 @@ namespace BluePlayer
 				MusicController.SetupForLoad(settings, VolumeSlider);
 			}
 
-
 			ClearPlaylist();
-
-			Application.Current.Resources["playPauseIcon"] = PackIconKind.Play;
-			Application.Current.Resources["playBtnToolTip"] = "Play";
+			CheckPlayStatus(false);
 		}
 
 		private void MusicController_OnRandomizeSwitch(object sender, SimpleArgs<bool> e)
@@ -82,6 +157,7 @@ namespace BluePlayer
 		private void MusicController_OnPlaySwitch(object sender, SimpleArgs<bool> e)
 		{
 			CheckPlayStatus(e.Value);
+			CheckPlayStatusForThumbnail(e.Value);
 		}
 
 		private void MediaPlayer_MediaOpened(object sender, EventArgs e)
@@ -112,7 +188,7 @@ namespace BluePlayer
 
 		private void BtnPlay_Click(object sender, RoutedEventArgs e)
 		{
-			MusicController.SwitchPlayPause();		
+			MusicController.SwitchPlayPause();
 		}
 
 		private void CheckPlayStatus(bool isPlaying)
@@ -126,6 +202,29 @@ namespace BluePlayer
 			{
 				Application.Current.Resources["playPauseIcon"] = PackIconKind.Play;
 				Application.Current.Resources["playBtnToolTip"] = "Play";
+			}
+		}
+
+		private void CheckPlayStatusForThumbnail(bool isPlaying)
+		{
+			MusicTrack currentTrack = MusicController.GetCurrentSong();
+
+			if (isPlaying)
+			{
+				ThumbnailPlayBtn.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, @"Graphics\pause.png")));
+				ThumbnailPlayBtn.Description = "Pause";
+
+				if (currentTrack != null)
+				{
+					this.Title = $"{currentTrack.Artist} - {currentTrack.SongName}";
+				}
+			}
+
+			else
+			{
+				ThumbnailPlayBtn.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, @"Graphics\right.png")));
+				ThumbnailPlayBtn.Description = "Play";
+				this.Title = $"BluePlayer";
 			}
 		}
 
@@ -274,7 +373,7 @@ namespace BluePlayer
 			}
 		}
 
-		private async Task AddFiles (string[] paths)
+		private async Task AddFiles(string[] paths)
 		{
 			foreach (string path in paths)
 			{
@@ -472,7 +571,7 @@ namespace BluePlayer
 
 		private void MailBtn_Click(object sender, RoutedEventArgs e)
 		{
-			System.Diagnostics.Process.Start("mailto:TheMatiaz0@protonmail.com?subject=Subject&amp;body=Test");
+			System.Diagnostics.Process.Start("mailto:TheMatiaz0@protonmail.com?subject=Subject&amp;body=Typesomethinghere");
 		}
 
 		private void ThumbnailPlayBtn_Click(object sender, EventArgs e)
@@ -483,6 +582,16 @@ namespace BluePlayer
 		private void Window_Closed(object sender, EventArgs e)
 		{
 			SerializationXML.SaveFile(PathToSettings, new Settings(MusicController));
+		}
+
+		private void ThumbnailPreviousBtn_Click(object sender, EventArgs e)
+		{
+			MusicController.Back();
+		}
+
+		private void ThumbnailNextBtn_Click(object sender, EventArgs e)
+		{
+			MusicController.Skip();
 		}
 	}
 }

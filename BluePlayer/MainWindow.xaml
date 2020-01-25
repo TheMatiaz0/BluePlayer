@@ -15,7 +15,9 @@
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfo x:Name="ThumbnailPlayBtn" ImageSource="/Graphics/BluePlayerLogo3.png" Description="Play" Click="ThumbnailPlayBtn_Click"/>
+                <ThumbButtonInfo x:Name="ThumbnailPreviousBtn" ImageSource="/Graphics/previous.png" Description="Previous" Click="ThumbnailPreviousBtn_Click" />
+                <ThumbButtonInfo x:Name="ThumbnailPlayBtn" ImageSource="/Graphics/right.png" Description="Play/Pause" Click="ThumbnailPlayBtn_Click" />
+                <ThumbButtonInfo x:Name="ThumbnailNextBtn" ImageSource="/Graphics/next.png" Description="Next" Click="ThumbnailNextBtn_Click" />
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
@@ -442,8 +444,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <Image x:Name="AlbumArtImg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="165"/>
-
+                        <Image x:Name="AlbumArtImg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="165" />
                         <TextBlock x:Name="PlayingSongName" FontSize="16" FontWeight="Light" Text="" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
 
 
@@ -456,7 +457,7 @@
                         </Button>
 
                         <Separator Height="50" Opacity="0"/>
-                        <TextBlock Text="v. 1.1.0" Grid.Column="0" Grid.Row="4" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+                        <TextBlock Text="v. 1.2.0" Grid.Column="0" Grid.Row="4" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -567,9 +568,9 @@
                                 <materialDesign:PackIcon Kind="Autorenew" Foreground="White"/>
                             </MenuItem.Icon>
                         </MenuItem>
-
                     </ContextMenu>
                 </ListView.ContextMenu>
+                
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding ID}" Width="45">
