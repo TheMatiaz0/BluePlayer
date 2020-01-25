@@ -23,6 +23,11 @@ namespace BluePlayer
 		public event EventHandler<SimpleArgs<bool>> OnLoopSwitch = delegate { };
 		public event EventHandler<SimpleArgs<bool>> OnRandomizeSwitch = delegate { };
 
+		public MusicTrack GetCurrentSong ()
+		{
+			return MusicTracks[CurrentSongNumber];
+		}
+
 		public void SetupForLoad (Settings settings, System.Windows.Controls.Slider slider)
 		{
 			MusicPlayer.Volume = settings.Volume;
@@ -47,7 +52,7 @@ namespace BluePlayer
 
 		public void PlaySameMusic(bool shouldPlay = true)
 		{
-			ChangeMusicTrack(MusicTracks[CurrentSongNumber], shouldPlay);
+			ChangeMusicTrack(GetCurrentSong(), shouldPlay);
 		}
 
 		public void PlaySelectedMusicTrack (MusicTrack track)
@@ -76,7 +81,7 @@ namespace BluePlayer
 				CurrentSongNumber = 0;
 			}
 
-			ChangeMusicTrack(MusicTracks[CurrentSongNumber], true);
+			ChangeMusicTrack(GetCurrentSong(), true);
 		}
 
 		public void Back()
@@ -98,7 +103,7 @@ namespace BluePlayer
 			{
 				CurrentSongNumber = MusicTracks.Count - 1;
 			}
-			ChangeMusicTrack(MusicTracks[CurrentSongNumber], true);
+			ChangeMusicTrack(GetCurrentSong(), true);
 		}
 
 

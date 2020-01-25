@@ -105,7 +105,7 @@ namespace BluePlayer
 					{
 						ClipProgress.Value = MusicController.MusicPlayer.Position.TotalSeconds;
 					}
-					lblStatus.Content = $"{(int)MusicController.MusicPlayer.Position.TotalMinutes}:{MusicController.MusicPlayer.Position.Seconds:00}/{(int)MusicController.MusicPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{MusicController.MusicPlayer.NaturalDuration.TimeSpan.Seconds:00}";
+					lblStatus.Content = $"Playing: {MusicController.GetCurrentSong().Artist} - {MusicController.GetCurrentSong().SongName} | {(int)MusicController.MusicPlayer.Position.TotalMinutes}:{MusicController.MusicPlayer.Position.Seconds:00}/{(int)MusicController.MusicPlayer.NaturalDuration.TimeSpan.TotalMinutes}:{MusicController.MusicPlayer.NaturalDuration.TimeSpan.Seconds:00}";
 				}
 			}
 		}
@@ -202,7 +202,7 @@ namespace BluePlayer
 			string[] creators = PropertyHandler.GetValues(shellFile.Properties.GetProperty(SystemProperties.System.Music.Artist));
 			string songName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Title));
 			string albumName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Music.AlbumTitle));
-			uint albumNumber = PropertyHandler.GetNumber(shellFile.Properties.GetProperty(SystemProperties.System.Music.TrackNumber));
+			uint? trackYear = PropertyHandler.GetNumber(shellFile.Properties.GetProperty(SystemProperties.System.Media.Year));
 			TimeSpan songDuration = PropertyHandler.GetDuration(shellFile.Properties.GetProperty(SystemProperties.System.Media.Duration));
 
 			Bitmap thumbnailFromShell = shellFile.Thumbnail.LargeBitmap;
@@ -237,7 +237,7 @@ namespace BluePlayer
 			}
 
 
-			MusicController.MusicTracks.Add(new MusicTrack(MusicController.MusicTracks.Count, finalCreator, songName, path, albumName, albumArt, System.IO.Path.GetExtension(path)));
+			MusicController.MusicTracks.Add(new MusicTrack(MusicController.MusicTracks.Count, finalCreator, songName, path, songDuration, albumName, trackYear, albumArt, System.IO.Path.GetExtension(path)));
 		}
 
 		private void BtnSkip_Click(object sender, RoutedEventArgs e)
@@ -269,7 +269,7 @@ namespace BluePlayer
 
 				foreach (string path in playlistFiles)
 				{
-					LoadPlaylist(path);
+					_ = LoadPlaylist(path);
 				}
 			}
 		}
@@ -347,7 +347,7 @@ namespace BluePlayer
 
 			foreach (MusicTrack item in MusicController.MusicTracks)
 			{
-				playlist.musicTracks.Add(new MusicTrack(item.ID, item.Artist, item.SongName, item.Path, item.AlbumTitle, item.AlbumArt, item.Extension));
+				playlist.musicTracks.Add(item);
 			}
 
 			SerializationXML.SaveFile(path, playlist);
@@ -370,7 +370,7 @@ namespace BluePlayer
 			}
 		}
 
-		public void LoadPlaylist(string path)
+		public async Task LoadPlaylist(string path)
 		{
 			if (!File.Exists(path))
 			{
@@ -381,6 +381,7 @@ namespace BluePlayer
 
 			foreach (MusicTrack item in playlist.musicTracks)
 			{
+				await Task.Delay(50);
 				AddFile(item.Path);
 			}
 		}
@@ -401,7 +402,7 @@ namespace BluePlayer
 			{
 				foreach (string item in loadFileDialog.FileNames)
 				{
-					LoadPlaylist(item);
+					_ = LoadPlaylist(item);
 				}
 			}
 
@@ -462,7 +463,6 @@ namespace BluePlayer
 		{
 			MusicController.ChangeRandomization();
 		}
-
 
 
 		private void GitHubBtn_Click(object sender, RoutedEventArgs e)

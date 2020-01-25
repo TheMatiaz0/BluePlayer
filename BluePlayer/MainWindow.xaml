@@ -442,11 +442,9 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <Border BorderBrush="White" BorderThickness="2" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="165">
-                            <Image x:Name="AlbumArtImg"/>
-                        </Border>
+                        <Image x:Name="AlbumArtImg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="165"/>
 
-                        <TextBlock x:Name="PlayingSongName" FontSize="16" FontWeight="Light" Text="Hello World!" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="PlayingSongName" FontSize="16" FontWeight="Light" Text="" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
 
 
                         <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="3" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
@@ -584,9 +582,31 @@
                                 <GridViewColumnHeader Foreground="White" Tag="SongName" Click="AllMusicTracksColumn_Click">Song</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
+                        <GridViewColumn Width="85">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0:00}:{1:00;00}">
+                                                <Binding Path="Duration.Minutes" />
+                                                <Binding Path="Duration.Seconds" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Foreground="White" Tag="Duration" Click="AllMusicTracksColumn_Click">Duration</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
                         <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="270">
                             <GridViewColumn.Header>
                                 <GridViewColumnHeader Foreground="White" Tag="Artist" Click="AllMusicTracksColumn_Click">Artist</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding TrackYear}" Width="65">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Foreground="White" Tag="TrackYear" Click="AllMusicTracksColumn_Click">Year</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
                     </GridView>

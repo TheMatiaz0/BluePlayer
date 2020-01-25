@@ -13,7 +13,7 @@ public static class SerializationXML
 		where T : class, new()
 	{
 		XmlSerializer xsl = new XmlSerializer(typeof(T));
-		using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+		using (FileStream fs = new FileStream(path, FileMode.Create))
 		{
 			xsl.Serialize(fs, o);
 			fs.Close();

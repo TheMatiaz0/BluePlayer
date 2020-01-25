@@ -16,14 +16,14 @@ public class PropertyHandler
 		return TimeSpan.FromTicks((long)ticks);
 	}
 
-	public static uint GetNumber (IShellProperty value)
+	public static uint? GetNumber (IShellProperty value)
 	{
 		if (value == null || value.ValueAsObject == null)
 		{
-			return 0;
+			return null;
 		}
 
-		return (uint)value.ValueAsObject;
+		return (uint?)value.ValueAsObject;
 	}
 
 	public static string GetValue(IShellProperty value)

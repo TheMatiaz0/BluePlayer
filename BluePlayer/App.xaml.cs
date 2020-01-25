@@ -31,12 +31,13 @@ namespace BluePlayer
 
 			foreach (string path in foundSoundFiles)
 			{
+				await Task.Delay(50);
 				((MainWindow)Current.MainWindow).AddFile(path);
 			}
 
 			foreach (string path in playlistFiles)
 			{
-				((MainWindow)Current.MainWindow).LoadPlaylist(path);
+				_ = ((MainWindow)Current.MainWindow).LoadPlaylist(path);
 			}
 		}
 	}
