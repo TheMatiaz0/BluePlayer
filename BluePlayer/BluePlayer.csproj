@@ -114,7 +114,6 @@
     <Compile Include="BitmapExtension.cs" />
     <Compile Include="FormattedSlider.cs" />
     <Compile Include="MainPlayer.cs" />
-    <Compile Include="MediaKeysHandler.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="PropertyHandler.cs" />
     <Compile Include="SerializationXML.cs" />
