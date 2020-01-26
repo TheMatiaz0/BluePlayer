@@ -283,7 +283,7 @@ namespace BluePlayer
 
 			if (foundSoundFiles != null)
 			{
-				AddFiles(foundSoundFiles);
+				_ = AddFiles(foundSoundFiles);
 
 				try
 				{
@@ -376,7 +376,7 @@ namespace BluePlayer
 				string[] foundSoundFiles = CheckSoundFiles((string[])e.Data.GetData(DataFormats.FileDrop));
 				string[] playlistFiles = CheckPlaylist((string[])e.Data.GetData(DataFormats.FileDrop));
 
-				AddFiles(foundSoundFiles);
+				_ = AddFiles(foundSoundFiles);
 
 				foreach (string path in playlistFiles)
 				{
@@ -385,10 +385,11 @@ namespace BluePlayer
 			}
 		}
 
-		public void AddFiles(string[] paths)
+		public async Task AddFiles(string[] paths)
 		{
 			foreach (string path in paths)
 			{
+				await Task.Delay(40);
 				AddFile(path);
 			}
 		}
@@ -491,7 +492,7 @@ namespace BluePlayer
 
 			foreach (MusicTrack item in playlist.musicTracks)
 			{
-				await Task.Delay(50);
+				await Task.Delay(40);
 				AddFile(item.Path);
 			}
 		}
@@ -622,7 +623,7 @@ namespace BluePlayer
 
 			if (result == CommonFileDialogResult.Ok)
 			{
-				AddFiles(loadAudioFileDialog.FileNames.ToArray());
+				_ = AddFiles(loadAudioFileDialog.FileNames.ToArray());
 			}
 
 			loadAudioFileDialog.Dispose();

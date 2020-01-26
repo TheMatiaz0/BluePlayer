@@ -454,6 +454,8 @@
                             <RowDefinition/>
                             <RowDefinition Height="5"/>
                             <RowDefinition/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
         
                         <Image x:Name="AlbumArtImg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" MaxWidth="165" />
@@ -470,7 +472,8 @@
                             <materialDesign:PackIcon Kind="EmailSend" Foreground="White" BorderBrush="Red" Width="25" Height="25"/>
                         </Button>
 
-                        <TextBlock Text="v. 1.2.5" Grid.Column="0" Grid.Row="5" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+                        <TextBlock Text="v. 1.2.6" Grid.Column="0" Grid.Row="5" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+                        <TextBlock Text="Created by Mateusz Kusionowicz" Grid.Column="0" Grid.Row="7" FontWeight="UltraLight" FontSize="11" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
                     </Grid>
                 </Grid>
             </Border>
