@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Shell;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace BluePlayer
@@ -23,7 +26,7 @@ namespace BluePlayer
 		public event EventHandler<SimpleArgs<bool>> OnLoopSwitch = delegate { };
 		public event EventHandler<SimpleArgs<bool>> OnRandomizeSwitch = delegate { };
 
-		public MusicTrack GetCurrentSong ()
+		public MusicTrack GetCurrentSong()
 		{
 			if (MusicTracks.Count <= 0)
 			{
@@ -33,7 +36,7 @@ namespace BluePlayer
 			return MusicTracks[CurrentSongNumber];
 		}
 
-		public void SetupForLoad (Settings settings, System.Windows.Controls.Slider slider)
+		public void SetupForLoad(Settings settings, System.Windows.Controls.Slider slider)
 		{
 			MusicPlayer.Volume = settings.Volume;
 			slider.Value = MusicPlayer.Volume;
@@ -43,13 +46,13 @@ namespace BluePlayer
 			OnRandomizeSwitch.Invoke(this, IsRandomized);
 		}
 
-		public void ChangeLoop ()
+		public void ChangeLoop()
 		{
 			IsLooped = !IsLooped;
 			OnLoopSwitch.Invoke(this, IsLooped);
 		}
 
-		public void ChangeRandomization ()
+		public void ChangeRandomization()
 		{
 			IsRandomized = !IsRandomized;
 			OnRandomizeSwitch.Invoke(this, IsRandomized);
@@ -60,7 +63,7 @@ namespace BluePlayer
 			ChangeMusicTrack(GetCurrentSong(), shouldPlay);
 		}
 
-		public void PlaySelectedMusicTrack (MusicTrack track)
+		public void PlaySelectedMusicTrack(MusicTrack track)
 		{
 			CurrentSongNumber = track.ID;
 			ChangeMusicTrack(track, true);
@@ -115,7 +118,7 @@ namespace BluePlayer
 		/// <summary>
 		/// Switch between Pause and Play.
 		/// </summary>
-		public void SwitchPlayPause ()
+		public void SwitchPlayPause()
 		{
 			IsPlaying = MusicPlayer.PlayWithPause(IsPlaying);
 			OnPlaySwitch.Invoke(this, IsPlaying);
@@ -159,7 +162,8 @@ namespace BluePlayer
 			}
 
 			MusicPlayer.Open(new Uri(music.Path));
-			MainWindow.albumArtPlace.Source = music.AlbumArt;
+
+			MainWindow.albumArtPlace.Source = GetImageFromAlbumArtProperty(music.Path);
 			MainWindow.currentSongPlaying.Text = music.AlbumTitle;
 
 			if (shouldPlay)
@@ -168,6 +172,14 @@ namespace BluePlayer
 				IsPlaying = true;
 				OnPlaySwitch.Invoke(this, IsPlaying);
 			}
+		}
+
+		public ImageSource GetImageFromAlbumArtProperty(string path)
+		{
+			ShellObject shellFile = ShellObject.FromParsingName(path);
+			Bitmap thumbnailFromShell = shellFile.Thumbnail.LargeBitmap;
+			return thumbnailFromShell.BitmapToImageSource();
+
 		}
 	}
 }

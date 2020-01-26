@@ -381,15 +381,14 @@
             <Border BorderBrush="White" BorderThickness="0.8 0 2 0" DockPanel.Dock="Left">
                 <Grid DockPanel.Dock="Left" Background="Black">
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
                             <RowDefinition/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
+                        <!--
                         <TextBox x:Name="PathInput" Height="Auto" TextWrapping="Wrap" FontSize="10" Text="Path " Foreground="White" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="111" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True" Margin="0,5"/>
                         <Button x:Name="GetFileBtn" HorizontalAlignment="Right" Click="GetFileBtn_Click" Grid.Column="1" Width="60" Background="DarkSlateBlue" BorderBrush="Transparent" ToolTip="Get path to your folder with songs">
                             <StackPanel Orientation="Horizontal" Width="70">
@@ -398,11 +397,21 @@
                                 <materialDesign:PackIcon Kind="Folder" Width="10" VerticalAlignment="Center" Height="10" Foreground="Yellow"/>
                             </StackPanel>
                         </Button>
+                        -->
 
-                        <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="Add files from folder to playlist" Height="25">
+                        <Button x:Name="OkBtn" Click="OkBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="1" Width="Auto" MinWidth="165" HorizontalAlignment="Stretch" VerticalAlignment="Top" ToolTip="Add files from folder to playlist" Height="25">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Add" FontSize="16" />
-                                <materialDesign:PackIcon Kind="Add" Foreground="Lime" Width="18" Height="18"/>
+                                <materialDesign:PackIcon Kind="FolderOutline" Foreground="White" Width="18" Height="18"/>
+                                <Separator Width="5" Opacity="0"/>
+                                <TextBlock Text="Add a folder" FontSize="16" FontWeight="Light" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="AddAudioFileBtn" Click="AddAudioFileBtn_Click" Background="DarkSlateBlue" BorderBrush="Transparent" Grid.Row="3" Width="Auto" MinWidth="165" HorizontalAlignment="Stretch" VerticalAlignment="Top" ToolTip="Add files to playlist" Height="25">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="LibraryMusicOutline" Foreground="White" Width="18" Height="18"/>
+                                <Separator Width="5" Opacity="0"/>
+                                <TextBlock Text="Add an audio file" FontSize="16" FontWeight="Light" />
                             </StackPanel>
                         </Button>
 
@@ -415,17 +424,19 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                        <Button x:Name="SaveBtn" Background="DarkSlateBlue" BorderBrush="Transparent" Click="SaveBtn_Click" Grid.Row="0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="25">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Create"/>
-                                <TextBlock Text="Create a playlist"/>
+                                <materialDesign:PackIcon Kind="CreateOutline"/>
+                                <Separator Width="5" Opacity="0"/>
+                                <TextBlock Text="Create a playlist" FontWeight="Light"/>
                             </StackPanel>
                         </Button>
 
-                        <Button x:Name="LoadBtn" Background="DarkSlateBlue" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" BorderBrush="Transparent" Click="LoadBtn_Click">
+                        <Button x:Name="LoadBtn" Background="DarkSlateBlue" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" BorderBrush="Transparent" Click="LoadBtn_Click" Height="25">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="FileDownload"/>
-                                <TextBlock Text="Load a playlist"/>
+                                <materialDesign:PackIcon Kind="FileDownloadOutline"/>
+                                <Separator Width="5" Opacity="0"/>
+                                <TextBlock Text="Load a playlist" FontWeight="Light"/>
                             </StackPanel>
                         </Button>
 
@@ -441,11 +452,14 @@
                             <RowDefinition Height="50"/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-
-                        <Image x:Name="AlbumArtImg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="165" />
-                        <TextBlock x:Name="PlayingSongName" FontSize="16" FontWeight="Light" Text="" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+        
+                        <Image x:Name="AlbumArtImg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" MaxWidth="165" />
+                        <Viewbox MaxWidth="150" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Stretch="Uniform" StretchDirection="DownOnly">
+                        <TextBlock x:Name="PlayingSongName" FontSize="16" FontWeight="Light" HorizontalAlignment="Center"/>
+                        </Viewbox>
 
 
                         <Button x:Name="GitHubBtn" Background="Transparent" BorderBrush="Transparent" Grid.Column="0" Grid.Row="3" Click="GitHubBtn_Click" ToolTip="Open GitHub project page">
@@ -456,8 +470,7 @@
                             <materialDesign:PackIcon Kind="EmailSend" Foreground="White" BorderBrush="Red" Width="25" Height="25"/>
                         </Button>
 
-                        <Separator Height="50" Opacity="0"/>
-                        <TextBlock Text="v. 1.2.0" Grid.Column="0" Grid.Row="4" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+                        <TextBlock Text="v. 1.2.5" Grid.Column="0" Grid.Row="5" FontSize="12" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -466,10 +479,16 @@
                 <Separator Width="25"/>
                 <local:FormattedSlider x:Name="ClipProgress" Foreground="#00367f" Thumb.DragStarted="ClipProgress_DragStarted" Thumb.DragCompleted="ClipProgress_DragCompleted" ValueChanged="ClipProgress_ValueChanged" AutoToolTipPlacement="BottomRight" Style="{DynamicResource FormattedSliderStyle1}" IsMoveToPointEnabled="True" IsSnapToTickEnabled="True" Margin="5,0">
                 </local:FormattedSlider>
-                <Label FontWeight="Light" Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" Background="#200020" Foreground="White"/>
+                    <Label FontWeight="Light" Name="lblStatus" HorizontalContentAlignment="Center" Margin="5" Background="#200020" Foreground="White">
+                        <Label.Content>
+                            <Viewbox Stretch="Fill" StretchDirection="DownOnly">
+                                <TextBlock x:Name="StatusBlock" Text="Not playing..."/>
+                            </Viewbox>
+                        </Label.Content>
+                    </Label>
 
 
-                <Grid>
+                    <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -603,6 +622,11 @@
                         <GridViewColumn x:Name="ArtistTab" DisplayMemberBinding="{Binding Artist}" Width="270">
                             <GridViewColumn.Header>
                                 <GridViewColumnHeader Foreground="White" Tag="Artist" Click="AllMusicTracksColumn_Click">Artist</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>                        
+                        <GridViewColumn DisplayMemberBinding="{Binding AlbumTitle}" Width="240">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Foreground="White" Tag="AlbumTitle" Click="AllMusicTracksColumn_Click">Album</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding TrackYear}" Width="65">

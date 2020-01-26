@@ -29,11 +29,7 @@ namespace BluePlayer
 			string[] foundSoundFiles = ((MainWindow)Current.MainWindow).CheckSoundFiles(args);
 			string[] playlistFiles = ((MainWindow)Current.MainWindow).CheckPlaylist(args);
 
-			foreach (string path in foundSoundFiles)
-			{
-				await Task.Delay(50);
-				((MainWindow)Current.MainWindow).AddFile(path);
-			}
+			((MainWindow)Current.MainWindow).AddFiles(foundSoundFiles);
 
 			foreach (string path in playlistFiles)
 			{

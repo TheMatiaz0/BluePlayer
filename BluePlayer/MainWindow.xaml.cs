@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -144,6 +146,7 @@ namespace BluePlayer
 			CheckPlayStatus(false);
 		}
 
+
 		private void MusicController_OnRandomizeSwitch(object sender, SimpleArgs<bool> e)
 		{
 			SetVisibility(randomEnableDot, e.Value);
@@ -171,9 +174,7 @@ namespace BluePlayer
 		{
 			while (true)
 			{
-
 				await Task.Delay(TimeSpan.FromMilliseconds(500));
-
 
 				if (MusicController.MusicPlayer.Source != null && MusicController.MusicPlayer.NaturalDuration.HasTimeSpan)
 				{
@@ -185,6 +186,8 @@ namespace BluePlayer
 				}
 			}
 		}
+
+
 
 		private void BtnPlay_Click(object sender, RoutedEventArgs e)
 		{
@@ -208,49 +211,63 @@ namespace BluePlayer
 		private void CheckPlayStatusForThumbnail(bool isPlaying)
 		{
 			MusicTrack currentTrack = MusicController.GetCurrentSong();
+			string path;
 
 			if (isPlaying)
 			{
-				ThumbnailPlayBtn.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, @"Graphics\pause.png")));
 				ThumbnailPlayBtn.Description = "Pause";
 
 				if (currentTrack != null)
 				{
 					this.Title = $"{currentTrack.Artist} - {currentTrack.SongName}";
 				}
+
+				path = System.IO.Path.Combine(Environment.CurrentDirectory, @"Graphics\pause.png");
+
+
+				if (!File.Exists(path))
+				{
+					return;
+				}
+
+				ThumbnailPlayBtn.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, @"Graphics\pause.png")));
+
 			}
 
 			else
 			{
-				ThumbnailPlayBtn.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, @"Graphics\right.png")));
 				ThumbnailPlayBtn.Description = "Play";
 				this.Title = $"BluePlayer";
+
+				path = System.IO.Path.Combine(Environment.CurrentDirectory, @"Graphics\right.png");
+
+				if (!File.Exists(path))
+				{
+					return;
+				}
+
+				ThumbnailPlayBtn.ImageSource = new BitmapImage(new Uri(path));
 			}
 		}
 
-		private void GetFileBtn_Click(object sender, RoutedEventArgs e)
+		private void OkBtn_Click(object sender, RoutedEventArgs e)
 		{
 			CommonOpenFileDialog dialog = new CommonOpenFileDialog
 			{
 				IsFolderPicker = true,
-				Title = "Select path to a folder that contains a bunch of songs (.mp3, .m4a, .wav)"
+				Title = "Select path to a folder that contains a bunch of songs (.mp3, .m4a, .wav, .flac)"
 			};
 			CommonFileDialogResult result = dialog.ShowDialog();
 
 			if (result == CommonFileDialogResult.Ok)
 			{
-				PathInput.Text = dialog.FileName;
+				FindAndAddFiles(dialog.FileName);
 			}
 
 			dialog.Dispose();
 		}
 
-		private void OkBtn_Click(object sender, RoutedEventArgs e)
-		{
-			_ = FindAndAddFiles(PathInput.Text);
-		}
-
-		public async Task FindAndAddFiles(string input)
+		public void FindAndAddFiles(string input)
 		{
 			string[] foundSoundFiles = null;
 
@@ -266,11 +283,7 @@ namespace BluePlayer
 
 			if (foundSoundFiles != null)
 			{
-				foreach (string path in foundSoundFiles)
-				{
-					await Task.Delay(50);
-					AddFile(path);
-				}
+				AddFiles(foundSoundFiles);
 
 				try
 				{
@@ -284,6 +297,8 @@ namespace BluePlayer
 			}
 
 		}
+
+
 
 		public void AddFile(string path)
 		{
@@ -303,9 +318,6 @@ namespace BluePlayer
 			string albumName = PropertyHandler.GetValue(shellFile.Properties.GetProperty(SystemProperties.System.Music.AlbumTitle));
 			uint? trackYear = PropertyHandler.GetNumber(shellFile.Properties.GetProperty(SystemProperties.System.Media.Year));
 			TimeSpan songDuration = PropertyHandler.GetDuration(shellFile.Properties.GetProperty(SystemProperties.System.Media.Duration));
-
-			Bitmap thumbnailFromShell = shellFile.Thumbnail.LargeBitmap;
-			ImageSource albumArt = thumbnailFromShell.BitmapToImageSource();
 
 
 			if (string.IsNullOrEmpty(songName))
@@ -332,11 +344,11 @@ namespace BluePlayer
 
 			else
 			{
-				finalCreator = "NaN";
+				finalCreator = null;
 			}
 
 
-			MusicController.MusicTracks.Add(new MusicTrack(MusicController.MusicTracks.Count, finalCreator, songName, path, songDuration, albumName, trackYear, albumArt, System.IO.Path.GetExtension(path)));
+			MusicController.MusicTracks.Add(new MusicTrack(MusicController.MusicTracks.Count, finalCreator, songName, path, songDuration, albumName, trackYear, System.IO.Path.GetExtension(path)));
 		}
 
 		private void BtnSkip_Click(object sender, RoutedEventArgs e)
@@ -364,7 +376,7 @@ namespace BluePlayer
 				string[] foundSoundFiles = CheckSoundFiles((string[])e.Data.GetData(DataFormats.FileDrop));
 				string[] playlistFiles = CheckPlaylist((string[])e.Data.GetData(DataFormats.FileDrop));
 
-				_ = AddFiles(foundSoundFiles);
+				AddFiles(foundSoundFiles);
 
 				foreach (string path in playlistFiles)
 				{
@@ -373,11 +385,10 @@ namespace BluePlayer
 			}
 		}
 
-		private async Task AddFiles(string[] paths)
+		public void AddFiles(string[] paths)
 		{
 			foreach (string path in paths)
 			{
-				await Task.Delay(50);
 				AddFile(path);
 			}
 		}
@@ -386,7 +397,7 @@ namespace BluePlayer
 		{
 			return (from item in paths
 					let ext = System.IO.Path.GetExtension(item)
-					where ext == ".mp3" || ext == ".wav" || ext == ".m4a"
+					where ext == ".mp3" || ext == ".wav" || ext == ".m4a" || ext == ".wma" || ext == ".flac" || ext == ".mp2"
 					select item).ToArray();
 		}
 
@@ -592,6 +603,29 @@ namespace BluePlayer
 		private void ThumbnailNextBtn_Click(object sender, EventArgs e)
 		{
 			MusicController.Skip();
+		}
+
+		private void AddAudioFileBtn_Click(object sender, RoutedEventArgs e)
+		{
+			CommonOpenFileDialog loadAudioFileDialog = new CommonOpenFileDialog
+			{
+				Multiselect = true
+			};
+			loadAudioFileDialog.Filters.Add(new CommonFileDialogFilter("Audio Files", "*.mp3;*.wma;*.m4a;*.mp2;*.flac"));
+			loadAudioFileDialog.Filters.Add(new CommonFileDialogFilter("MP3 Files", "*.mp3"));
+			loadAudioFileDialog.Filters.Add(new CommonFileDialogFilter("WMA Files", "*.wma"));
+			loadAudioFileDialog.Filters.Add(new CommonFileDialogFilter("Mpeg4 Files", "*.m4a"));
+			loadAudioFileDialog.Filters.Add(new CommonFileDialogFilter("MP2 Files", "*.mp2"));
+			loadAudioFileDialog.Filters.Add(new CommonFileDialogFilter("FLAC Files", "*.flac"));
+
+			CommonFileDialogResult result = loadAudioFileDialog.ShowDialog();
+
+			if (result == CommonFileDialogResult.Ok)
+			{
+				AddFiles(loadAudioFileDialog.FileNames.ToArray());
+			}
+
+			loadAudioFileDialog.Dispose();
 		}
 	}
 }
