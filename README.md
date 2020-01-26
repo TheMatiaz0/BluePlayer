@@ -59,4 +59,4 @@ The BluePlayer project is under the [MIT](https://opensource.org/licenses/MIT) l
 You can send me feedback and/or bugs from the Issues tab on GitHub, also you can contact me at the TheMatiaz0@protonmail.com e-mail address.
 
 # Special Thanks
-- [w4ty (Bruno T.)](https://github.com/w4ty) for helping me with English gramatics and also for suggesting me changes.
+- [w4ty (Bruno T.)](https://github.com/w4ty) for helping me with English grammar and also for suggesting me changes.
