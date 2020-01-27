@@ -32,18 +32,22 @@ There are 4 ways to do that:
 ### How to save the playlist?
 You can save the playlist by pressing the "Create a playlist" button and choose the path for your .playlist file.
 
+![Saving Playlist](/doc/creatingPlaylist.gif)
+
 ### How to load back my playlist?
 Loading back the playlist is also simple, all you have to do is press the "Load a playlist" button and select the path to your .playlist file previously saved.
 
-![Loading and Saving Playlist](/doc/loadingPlaylist.gif)
+![Loading Playlist](/doc/loadingPlaylist.gif)
 
 ### How to clear the playlist?
 Right-click on the playlist area and press the "Clear Playlist" button.
 
+![Clearing playlist](/doc/clearingPlaylist.gif)
+
 ### How to remove a specific music track from the playlist?
 Right-click on the music track entry in the playlist and press the "Remove a music track" button.
 
-![Clearing playlist](/doc/clearingPlaylist.gif)
+![Removing a music track](/doc/removingMusic.gif)
 
 # Third-party libraries:
 - [Material Design In XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) by James Willock,  Mulholland Software and Contributors,
