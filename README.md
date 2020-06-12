@@ -10,7 +10,7 @@ BluePlayer has an ability to loop through tracks or randomize your next track.
 
 ![Loop and Randomize button](/doc/BluePlayer_vhp4Ww1T9B.png)
 
-**Current Version:** 1.2.5.
+**Current Version:** 1.2.6.
 
 ***
 
