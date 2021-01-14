@@ -1,4 +1,4 @@
-# :musical_note: BluePlayer
+# :musical_note: ![](/doc/bp-thumbnail.png) 
 
 ![Icon of BluePlayer](/BluePlayer/Graphics/BluePlayerLogo3_128px.png)
 
