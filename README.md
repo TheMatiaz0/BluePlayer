@@ -1,6 +1,4 @@
-# :musical_note: ![](/doc/bp-thumbnail.png) 
-
-![Icon of BluePlayer](/BluePlayer/Graphics/BluePlayerLogo3_128px.png)
+# ![](/doc/bp-thumbnail.png) 
 
 ![GIF presentation](/doc/mainPresentation.gif)
 A software created for listening to music.
@@ -64,3 +62,5 @@ You can send me feedback and/or bugs from the Issues tab on GitHub, also you can
 
 # Special Thanks
 - [w4ty (Bruno T.)](https://github.com/w4ty) for helping me with English grammar and also for suggesting me changes.
+
+# ![Icon of BluePlayer](/BluePlayer/Graphics/BluePlayerLogo3_128px.png)
